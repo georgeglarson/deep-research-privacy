@@ -1,0 +1,10 @@
+services:
+  deep-research:
+    container_name: deep-research
+    build: .
+    env_file:
+      - .env
+    stdin_open: true  # docker run -i
+    tty: true        # docker run -t
+    volumes:
+      - ./research:/app/research  # Mount research directory
