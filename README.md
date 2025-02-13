@@ -5,11 +5,27 @@
 
 > A privacy-focused research tool powered by uncensored AI and private search
 
+[![GitHub stars](https://img.shields.io/github/stars/georgeglarson/deep-research-privacy?style=social)](https://github.com/georgeglarson/deep-research-privacy)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)](https://twitter.com/intent/tweet?text=Check%20out%20Deep%20Research%20Privacy%20Edition%20-%20AI-powered%20research%20with%20privacy%20first%21&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
+
 A privacy-focused research tool that combines:
 - **Venice.ai's Uncensored Language Models**: Access to powerful AI models without content restrictions
 - **Brave Search's Private Search API**: Privacy-respecting web search capabilities
 
+## Why This Matters 🔒
+
+In today's AI landscape, privacy often takes a backseat to functionality. This project proves it doesn't have to be that way:
+
+- **True Privacy**: Your research queries stay private with Brave Search's no-logging policy
+- **Uncensored Research**: Access Venice.ai's unrestricted models for genuine research freedom
+- **Local Processing**: Keep sensitive data on your machine, not in the cloud
+- **Transparent Code**: 100% open source, audit everything yourself
+
 This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng), enhanced to prioritize user privacy and unrestricted research capabilities.
+
+## Quick Demo 🎥
+
+[Coming Soon] Watch Deep Research in action!
 
 ## The Coolest Part? Run It Your Way! 🚀
 
@@ -49,6 +65,25 @@ This project showcases:
 - Automatic rate limit handling
 - Robust error recovery
 - Detailed progress tracking
+
+## How We Compare 📊
+
+| Feature | Deep Research Privacy | Traditional Research Tools | Other AI Assistants |
+|---------|---------------------|------------------------|-------------------|
+| Privacy First | ✅ No data collection | ❌ Tracks searches | ❌ Stores conversations |
+| Uncensored Results | ✅ Full access | ❌ Filtered results | ❌ Content restrictions |
+| Open Source | ✅ 100% transparent | ❌ Closed source | ❌ Proprietary |
+| Local Processing | ✅ Your machine | ❌ Cloud-based | ❌ Cloud-based |
+| Cost | ✅ Pay per use | ❌ Expensive subscriptions | ❌ Monthly fees |
+
+## Share & Contribute 🌟
+
+Help make AI research more private:
+
+1. ⭐ Star this repository to show your support
+2. 🐦 Share on [Twitter](https://twitter.com/intent/tweet?text=Check%20out%20Deep%20Research%20Privacy%20Edition%20-%20AI-powered%20research%20with%20privacy%20first%21&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
+3. 🔄 Follow [@g3ologic](https://twitter.com/g3ologic) for updates
+4. 🤝 Join our [contributors](CONTRIBUTING.md)
 
 ## Getting Started
 
@@ -178,11 +213,15 @@ Venice.ai models, each optimized for different tasks:
 3. Make your changes
 4. Submit a pull request
 
-## Contact & Social
+## Connect & Engage 🤝
 
-- Email: george.g.larson@gmail.com
-- Twitter: [@g3ologic](https://x.com/g3ologic)
-- LinkedIn: [George Larson](https://www.linkedin.com/in/georgelarson/)
+Let's make privacy-first AI research the standard:
+
+- 📧 Questions? Email [george.g.larson@gmail.com](mailto:george.g.larson@gmail.com)
+- 🐦 Follow [@g3ologic](https://x.com/g3ologic) for project updates
+- 💼 Connect on [LinkedIn](https://www.linkedin.com/in/georgelarson/)
+- 🌟 Star and watch this repo for updates
+- 🔔 Report issues or suggest features in [GitHub Issues](https://github.com/georgeglarson/deep-research-privacy/issues)
 
 ## License
 
