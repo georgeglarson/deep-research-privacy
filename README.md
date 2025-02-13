@@ -1,8 +1,15 @@
 # Deep Research: Privacy Edition
 
-A privacy-focused research tool using Venice.ai's uncensored language models and Brave Search. Built as a learning project to demonstrate clean TypeScript architecture and API integration.
+[![Venice.ai](https://img.shields.io/badge/Powered%20by-Venice.ai-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVDhPY/hPIWBgYGDEJvHo+dv/h85d/H/h6rX/F69e+3/u8uX/Z69c+X/64qX/R89f+H/g9Nn/245f+L9y35n/c7ef+D9l4wkwBgn8+PWLgZGRkQEoiYSxaESWRMdwjX///WNgYmJCkUTXDMPIEshyYMDIwMSE6mJkzTCMrAGGYZqwacYmh6IRnyQyxqoRnyQyxqpp+tYT/xdvO4aqAZ9mkMSMDQf/gzQxXLp27f/6/fv/L1y1+v/MpcuQnYxVEwzDNDEcOHPu/9y5c/8vWLDg/7x58/7PmTPn/6xZs/5Pnz79/9SpU/9PmjTp/8SJE/+PHz/+/7hx4/6PHj0aQyM+SQKakQEAoH2r9cxf/NkAAAAASUVORK5CYII=)](https://venice.ai)
+[![Brave Search](https://img.shields.io/badge/Search%20by-Brave-orange?style=for-the-badge&logo=brave)](https://search.brave.com)
 
-This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng). The original project has been modified to prioritize privacy through the use of Venice.ai's uncensored models and Brave Search integration.
+> A privacy-focused research tool powered by uncensored AI and private search
+
+A privacy-focused research tool that combines:
+- **Venice.ai's Uncensored Language Models**: Access to powerful AI models without content restrictions
+- **Brave Search's Private Search API**: Privacy-respecting web search capabilities
+
+This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng), enhanced to prioritize user privacy and unrestricted research capabilities.
 
 ## The Coolest Part? Run It Your Way! 🚀
 
