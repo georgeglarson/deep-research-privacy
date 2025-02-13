@@ -24,5 +24,18 @@
   "dependencies": {},
   "engines": {
     "node": "18.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgeglarson/deep-research-privacy.git"
+  },
+  "homepage": "https://github.com/georgeglarson/deep-research-privacy#readme",
+  "bugs": {
+    "url": "https://github.com/georgeglarson/deep-research-privacy/issues"
+  },
+  "originalProject": {
+    "name": "deep-research",
+    "url": "https://github.com/dzhng/deep-research",
+    "author": "https://github.com/dzhng"
   }
 }

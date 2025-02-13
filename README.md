@@ -2,6 +2,8 @@
 
 A privacy-focused research tool using Venice.ai's uncensored language models and Brave Search. Built as a learning project to demonstrate clean TypeScript architecture and API integration.
 
+This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng). The original project has been modified to prioritize privacy through the use of Venice.ai's uncensored models and Brave Search integration.
+
 ## The Coolest Part? Run It Your Way! 🚀
 
 This project is designed to be super flexible - you can run the exact same code in two ways:
