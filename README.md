@@ -90,7 +90,7 @@ Help make AI research more private:
 First, you'll need to get API keys:
 
 1. **Venice.ai API Key**
-   - Go to [Venice.ai](https://venice.ai)
+   - Go to [Venice.ai](https://venice.ai/chat?ref=VB8W1j)
    - Sign up for an account
    - Navigate to your API settings
    - Generate a new API key
