@@ -45,7 +45,21 @@ This project showcases:
 
 ## Getting Started
 
-First, configure your environment:
+First, you'll need to get API keys:
+
+1. **Venice.ai API Key**
+   - Go to [Venice.ai](https://venice.ai)
+   - Sign up for an account
+   - Navigate to your API settings
+   - Generate a new API key
+
+2. **Brave Search API Key**
+   - Visit [Brave Search API](https://api.search.brave.com/app)
+   - Create a developer account
+   - Go to [API Keys](https://api.search.brave.com/app/keys)
+   - Generate a new API key
+
+Then configure your environment:
 
 ```bash
 # Copy example config
