@@ -26,11 +26,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
-    - name: Check formatting
-      run: npm run format -- --check
-      
     - name: Run tests
       run: npm test
+      env:
+        VENICE_API_KEY: ${{ secrets.VENICE_API_KEY || 'dummy-key' }}
+        BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY || 'dummy-key' }}
+
+    - name: Check formatting
+      run: npm run format -- --check
       env:
         # Add dummy values for required env vars in CI
         VENICE_API_KEY: ${{ secrets.VENICE_API_KEY || 'dummy-key' }}
@@ -47,7 +50,7 @@ jobs:
       
     - name: Test Docker image
       run: |
-        docker run --rm deep-research npm test
-      env:
-        VENICE_API_KEY: ${{ secrets.VENICE_API_KEY || 'dummy-key' }}
-        BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY || 'dummy-key' }}
+        docker run --rm \
+          -e VENICE_API_KEY=${{ secrets.VENICE_API_KEY || 'dummy-key' }} \
+          -e BRAVE_API_KEY=${{ secrets.BRAVE_API_KEY || 'dummy-key' }} \
+          deep-research npm test

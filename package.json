@@ -5,10 +5,11 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
+    "prepare": "husky install",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "start": "tsx --env-file=.env src/run.ts",
     "docker": "tsx src/run.ts",
-    "test": "tsx --test tests/**/*.test.ts",
+    "test": "tsx --env-file=.env.test --test tests/**/*.test.ts",
     "test:delay": "tsx --env-file=.env tests/delay.ts",
     "test:search": "tsx --env-file=.env tests/search.ts"
   },
@@ -17,11 +18,14 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/node": "^22.13.0",
+    "husky": "^9.0.11",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^1.6.7"
+  },
   "engines": {
     "node": "18.x"
   },
