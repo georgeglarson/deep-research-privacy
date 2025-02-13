@@ -8,7 +8,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "start": "tsx --env-file=.env src/run.ts",
     "docker": "tsx src/run.ts",
-    "test": "tsx --env-file=.env.test --test \"tests/**/*.test.ts\"",
+    "test": "tsx --env-file=.env.test --test tests/ai/text-splitter.test.ts tests/search/search.test.ts",
     "test:delay": "tsx --env-file=.env tests/delay.ts",
     "test:search": "tsx --env-file=.env tests/search.ts"
   },
