@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle -->
+    <circle cx="20" cy="20" r="20" fill="#007AFF"/>
+    
+    <!-- Magnifying Glass -->
+    <path d="M25.625 25.625L30 30" stroke="white" stroke-width="3.75" stroke-linecap="round"/>
+    <circle cx="17.5" cy="17.5" r="7.5" stroke="white" stroke-width="3.75"/>
+    
+    <!-- Privacy Shield -->
+    <path d="M17.5 12.5V22.5M12.5 17.5H22.5" stroke="white" stroke-width="3.75" stroke-linecap="round"/>
+</svg>

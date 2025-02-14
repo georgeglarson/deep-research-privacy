@@ -5,6 +5,7 @@
 
 > A privacy-focused research tool powered by uncensored AI and private search
 
+[![Try Demo](https://img.shields.io/badge/Try-Demo-green?style=for-the-badge)](https://georgeglarson.github.io/deep-research-privacy/demo.html)
 [![GitHub stars](https://img.shields.io/github/stars/georgeglarson/deep-research-privacy?style=social)](https://github.com/georgeglarson/deep-research-privacy)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)](https://twitter.com/intent/tweet?text=Excited%20to%20discover%20Deep%20Research%20Privacy%20Edition!%20Privacy-first%20research%20using%20%40VeniceAI%20(venice.ai%2Fchat%3Fref%3DVB8W1j)%20%2B%20%40brave%20search.%20Fork%20of%20%40dzhng%27s%20work%2C%20now%20with%20uncensored%20models%20%26%20private%20search.%0A%0A%23AI%20%23Privacy%20%23OpenSource%20%23Research%0A&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
 
@@ -25,7 +26,12 @@ This project is a privacy-focused fork of [deep-research](https://github.com/dzh
 
 ## Quick Demo 🎥
 
-[Coming Soon] Watch Deep Research in action!
+Try the interactive demo at [georgeglarson.github.io/deep-research-privacy/demo.html](https://georgeglarson.github.io/deep-research-privacy/demo.html)
+
+Features you can try:
+- Research privacy topics with uncensored AI
+- Compare different AI models
+- Experience our privacy-first approach
 
 ## The Coolest Part? Run It Your Way! 🚀
 
