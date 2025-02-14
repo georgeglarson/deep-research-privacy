@@ -74,7 +74,7 @@ class BraveSearchProvider implements SearchProvider {
       throw new Error('BRAVE_API_KEY environment variable is required');
     }
     this.apiKey = apiKey;
-    this.rateLimiter = new RateLimiter(2000); // 2 seconds between requests
+    this.rateLimiter = new RateLimiter(5000); // 5 seconds between requests for free plan
   }
 
   private async makeRequest(query: string): Promise<SearchResult[]> {
