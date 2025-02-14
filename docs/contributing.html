@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributing to Deep Research</title>
+    <meta name="description" content="Guidelines for contributing to Deep Research: A privacy-focused research tool">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/deep-research-privacy/assets/img/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/deep-research-privacy/assets/css/main.css">
+    <style>
+        .contributing {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .contributing h1 {
+            font-size: var(--text-4xl);
+            margin-bottom: 2rem;
+            color: var(--color-text);
+        }
+        .contributing h2 {
+            font-size: var(--text-2xl);
+            margin: 2rem 0 1rem;
+            color: var(--color-primary);
+        }
+        .contributing h3 {
+            font-size: var(--text-xl);
+            margin: 1.5rem 0 0.5rem;
+            color: var(--color-text);
+        }
+        .contributing p {
+            margin-bottom: 1rem;
+            color: var(--color-text-muted);
+        }
+        .contributing ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        .contributing li {
+            margin-bottom: 0.5rem;
+            color: var(--color-text-muted);
+        }
+        .contributing code {
+            font-family: var(--font-code);
+            background: var(--color-card-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .contributing pre {
+            background: var(--color-card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .contributing pre code {
+            background: none;
+            padding: 0;
+        }
+        .contributing a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .contributing a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="nav__logo">
+            <img src="/deep-research-privacy/assets/img/logo.svg" alt="Deep Research" width="40" height="40">
+            <span>Deep Research</span>
+        </div>
+        <nav class="nav__links">
+            <a href=".">Home</a>
+            <a href="https://github.com/georgeglarson/deep-research-privacy" target="_blank" rel="noopener">GitHub</a>
+            <a href="quickstart.html">Quick Start</a>
+            <a href="about.html">About</a>
+        </nav>
+        <button class="nav__theme-toggle" aria-label="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path class="moon" d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </header>
+
+    <main class="contributing">
+        <h1>Contributing to Deep Research</h1>
+        
+        <p>Thank you for your interest in contributing to Deep Research! We welcome contributions from everyone who shares our commitment to privacy-focused AI research.</p>
+
+        <h2>Getting Started</h2>
+        <ol>
+            <li>Fork the repository</li>
+            <li>Clone your fork: <code>git clone https://github.com/your-username/deep-research-privacy.git</code></li>
+            <li>Create a new branch: <code>git checkout -b feature/your-feature-name</code></li>
+            <li>Make your changes</li>
+            <li>Push to your fork: <code>git push origin feature/your-feature-name</code></li>
+            <li>Open a Pull Request</li>
+        </ol>
+
+        <h2>Development Setup</h2>
+        <ol>
+            <li>Install dependencies: <code>npm install</code></li>
+            <li>Copy example config: <code>cp .env.example .env</code></li>
+            <li>Add your API keys to <code>.env</code></li>
+            <li>Start development server: <code>npm run dev</code></li>
+        </ol>
+
+        <h2>Code Style</h2>
+        <ul>
+            <li>Use TypeScript for all new code</li>
+            <li>Follow existing patterns in the codebase</li>
+            <li>Include comprehensive comments</li>
+            <li>Write tests for new features</li>
+            <li>Ensure all tests pass: <code>npm test</code></li>
+        </ul>
+
+        <h2>Commit Messages</h2>
+        <p>Please follow these guidelines for commit messages:</p>
+        <ul>
+            <li>Use the present tense ("Add feature" not "Added feature")</li>
+            <li>Use the imperative mood ("Move cursor to..." not "Moves cursor to...")</li>
+            <li>Limit the first line to 72 characters or less</li>
+            <li>Reference issues and pull requests liberally after the first line</li>
+        </ul>
+
+        <h2>Pull Request Process</h2>
+        <ol>
+            <li>Update the README.md with details of changes to the interface</li>
+            <li>Update the documentation if you're adding or modifying features</li>
+            <li>Add tests for new functionality</li>
+            <li>Ensure the test suite passes</li>
+            <li>Update the version numbers in package.json and README.md following SemVer</li>
+        </ol>
+
+        <h2>Code of Conduct</h2>
+        <p>This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to <a href="mailto:george.g.larson@gmail.com">george.g.larson@gmail.com</a>.</p>
+
+        <h2>Questions?</h2>
+        <p>If you have any questions, please feel free to:</p>
+        <ul>
+            <li>Open an issue</li>
+            <li>Start a discussion</li>
+            <li>Contact the maintainer directly</li>
+        </ul>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="about.html">About</a>
+                <a href="quickstart.html">Quick Start</a>
+                <a href="https://github.com/georgeglarson/deep-research-privacy">GitHub</a>
+                <a href="mailto:george.g.larson@gmail.com">Contact</a>
+            </div>
+            <p class="footer__copyright">© 2024 Deep Research. MIT License.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { ThemeManager } from '/deep-research-privacy/assets/js/theme.js';
+        new ThemeManager();
+    </script>
+</body>
+</html>
