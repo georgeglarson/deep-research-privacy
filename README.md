@@ -1,6 +1,6 @@
 # Deep Research: Privacy Edition
 
-[![Venice.ai](https://img.shields.io/badge/Powered%20by-Venice.ai-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVDhPY/hPIWBgYGDEJvHo+dv/h85d/H/h6rX/F69e+3/u8uX/Z69c+X/64qX/R89f+H/g9Nn/245f+L9y35n/c7ef+D9l4wkwBgn8+PWLgZGRkQEoiYSxaESWRMdwjX///WNgYmJCkUTXDMPIEshyYMDIwMSE6mJkzTCMrAGGYZqwacYmh6IRnyQyxqoRnyQyxqpp+tYT/xdvO4aqAZ9mkMSMDQf/gzQxXLp27f/6/fv/L1y1+v/MpcuQnYxVEwzDNDEcOHPu/9y5c/8vWLDg/7x58/7PmTPn/6xZs/5Pnz79/9SpU/9PmjTp/8SJE/+PHz/+/7hx4/6PHj0aQyM+SQKakQEAoH2r9cxf/NkAAAAASUVORK5CYII=)](https://venice.ai)
+[![Venice.ai](https://img.shields.io/badge/Powered%20by-Venice.ai-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVDhPY/hPIWBgYGDEJvHo+dv/h85d/H/h6rX/F69e+3/u8uX/Z69c+X/64qX/R89f+H/g9Nn/245f+L9y35n/c7ef+D9l4wkwBgn8+PWLgZGRkQEoiYSxaESWRMdwjX///WNgYmJCkUTXDMPIEshyYMDIwMSE6mJkzTCMrAGGYZqwacYmh6IRnyQyxqoRnyQyxqpp+tYT/xdvO4aqAZ9mkMSMDQf/gzQxXLp27f/6/fv/L1y1+v/MpcuQnYxVEwzDNDEcOHPu/9y5c/8vWLDg/7x58/7PmTPn/6xZs/5Pnz79/9SpU/9PmjTp/8SJE/+PHz/+/7hx4/6PHj0aQyM+SQKakQEAoH2r9cxf/NkAAAAASUVORK5CYII=)](https://venice.ai/chat?ref=VB8W1j)
 [![Brave Search](https://img.shields.io/badge/Search%20by-Brave-orange?style=for-the-badge&logo=brave)](https://search.brave.com)
 
 > A privacy-focused research tool powered by uncensored AI and private search
@@ -231,4 +231,4 @@ Let's make privacy-first AI research the standard:
 
 ## License
 
-ISC License
+MIT License - see [LICENSE](LICENSE) for details
