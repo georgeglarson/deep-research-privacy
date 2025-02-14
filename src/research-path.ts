@@ -1,6 +1,6 @@
 import { generateQueries, processResults, trimPrompt } from './ai/providers.js';
 import { output } from './output-manager.js';
-import { SearchResult, suggestSearchProvider } from './search/providers.js';
+import { SearchError, SearchResult, suggestSearchProvider } from './search/providers.js';
 import { cleanQuery } from './utils.js';
 import { ResearchConfig, ResearchProgress, ResearchResult } from './deep-research.js';
 
@@ -26,8 +26,18 @@ export class ResearchPath {
     this.progress.totalQueries = this.totalQueriesAtDepth.reduce((a, b) => a + b, 0);
   }
 
-  private async search(query: string): Promise<SearchResult[]> {
-    return suggestSearchProvider({ type: 'web' }).search(query);
+  private async search(query: string, attempt: number = 0): Promise<SearchResult[]> {
+    try {
+      return await suggestSearchProvider({ type: 'web' }).search(query);
+    } catch (error) {
+      if (error instanceof SearchError && error.code === 'RATE_LIMIT' && attempt < 3) {
+        const delay = 10000 * Math.pow(2, attempt); // 10s, 20s, 40s backoff
+        output.log(`Rate limited at research level. Waiting ${delay/1000}s before retry...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return this.search(query, attempt + 1);
+      }
+      throw error;
+    }
   }
 
   private async processQuery(
@@ -97,9 +107,15 @@ export class ResearchPath {
         sources: allSources,
       };
     } catch (error) {
+      if (error instanceof SearchError && error.code === 'RATE_LIMIT') {
+        // Let the rate limit error propagate up to be handled by the retry mechanism
+        throw error;
+      }
+      
       output.log(`Error processing query "${query}":`, error);
+      // For non-rate-limit errors, return empty results but continue research
       return {
-        learnings: [],
+        learnings: [`Error researching: ${query}`],
         sources: [],
       };
     }
@@ -123,16 +139,21 @@ export class ResearchPath {
       currentQuery: queries[0]?.query,
     });
 
-    // Process each query in parallel
-    const results = await Promise.all(
-      queries.map(serpQuery =>
-        this.processQuery(
-          serpQuery.query,
-          depth,
-          breadth
-        )
-      )
-    );
+    // Process queries sequentially with delay to avoid rate limits
+    const results = [];
+    for (const serpQuery of queries) {
+      const result = await this.processQuery(
+        serpQuery.query,
+        depth,
+        breadth
+      );
+      results.push(result);
+      
+      // Add delay between queries to respect rate limits
+      if (queries.indexOf(serpQuery) < queries.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
 
     // Combine and deduplicate results
     return {

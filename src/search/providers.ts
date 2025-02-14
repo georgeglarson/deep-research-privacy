@@ -113,26 +113,39 @@ class BraveSearchProvider implements SearchProvider {
       try {
         return await this.makeRequest(query);
       } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.status === 429) {
-          const errorResponse = error.response.data as BraveErrorResponse;
-          output.log('Rate limit response:', JSON.stringify(errorResponse, null, 2));
-          
-          if (retryCount < this.maxRetries) {
-            const delay = this.retryDelay * Math.pow(2, retryCount);
-            output.log(`Rate limited. Attempt ${retryCount + 1}/${this.maxRetries}. Waiting ${delay/1000} seconds...`);
-            await new Promise(resolve => setTimeout(resolve, delay));
-            retryCount++;
-            continue;
-          }
-        }
-
-        output.log(`Brave search error: ${error instanceof Error ? error.message : 'Unknown error'}`);
         if (axios.isAxiosError(error)) {
-          output.log('API Error Response:', error.response?.data || 'No error details available');
+          const status = error.response?.status;
+          const errorResponse = error.response?.data as BraveErrorResponse;
+          
+          if (status === 429) {
+            output.log('Rate limit response:', JSON.stringify(errorResponse, null, 2));
+            
+            if (retryCount < this.maxRetries) {
+              const delay = this.retryDelay * Math.pow(2, retryCount);
+              output.log(`Rate limited. Attempt ${retryCount + 1}/${this.maxRetries}. Waiting ${delay/1000} seconds...`);
+              await new Promise(resolve => setTimeout(resolve, delay));
+              retryCount++;
+              continue;
+            }
+            
+            throw new SearchError(
+              'RATE_LIMIT',
+              `Rate limit exceeded after ${this.maxRetries} retries`,
+              this.type
+            );
+          }
+          
+          output.log('API Error Response:', errorResponse || 'No error details available');
+          throw new SearchError(
+            'API_ERROR',
+            `Brave search failed: ${error.message}`,
+            this.type
+          );
         }
-
+        
+        output.log(`Brave search error: ${error instanceof Error ? error.message : 'Unknown error'}`);
         throw new SearchError(
-          'API_ERROR',
+          'UNKNOWN_ERROR',
           `Brave search failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
           this.type
         );
