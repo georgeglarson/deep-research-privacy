@@ -1,5 +1,6 @@
 import { queryExpansionTemplate, systemPrompt } from '../prompt.js';
 import { LLMClient } from './llm-client.js';
+import { VeniceModel } from './models.js';
 import {
   LearningProcessor,
   LearningResult,
@@ -12,10 +13,27 @@ import {
 const queryProcessor = new QueryProcessor();
 const learningProcessor = new LearningProcessor();
 const reportProcessor = new ReportProcessor();
-const client = new LLMClient({});
+const client = new LLMClient({
+  model: 'llama-3.3-70b',
+});
 
 type OutputType = 'query' | 'learning' | 'report';
 type ProcessorResult = QueryResult | LearningResult | ReportResult;
+
+interface GenerateQueriesParams {
+  query: string;
+  numQueries?: number;
+  learnings?: string[];
+  model?: VeniceModel;
+}
+
+interface ProcessResultsParams {
+  query: string;
+  content: string[];
+  numLearnings?: number;
+  numFollowUpQuestions?: number;
+  model?: VeniceModel;
+}
 
 export async function generateOutput(params: {
   type: OutputType;
@@ -23,6 +41,7 @@ export async function generateOutput(params: {
   prompt: string;
   temperature?: number;
   maxTokens?: number;
+  model?: VeniceModel;
 }): Promise<
   { success: true; data: ProcessorResult } | { success: false; error: string }
 > {
@@ -78,17 +97,14 @@ export function trimPrompt(text: string, maxLength = 100000): string {
   return text.length <= maxLength ? text : text.slice(0, maxLength);
 }
 
-export async function generateQueries(params: {
-  query: string;
-  numQueries?: number;
-  learnings?: string[];
-}): Promise<Array<{ query: string; researchGoal: string }>> {
-  const { query, numQueries = 3, learnings = [] } = params;
+export async function generateQueries(params: GenerateQueriesParams): Promise<Array<{ query: string; researchGoal: string }>> {
+  const { query, numQueries = 3, learnings = [], model = 'deepseek-r1-671b' } = params;
 
   const result = await generateOutput({
     type: 'query',
     system: systemPrompt(),
     prompt: queryExpansionTemplate(query, learnings),
+    model,
   });
 
   if (result.success && 'queries' in result.data) {
@@ -103,16 +119,17 @@ export async function generateQueries(params: {
   ];
 }
 
-export async function processResults(params: {
-  query: string;
-  content: string[];
-  numLearnings?: number;
-  numFollowUpQuestions?: number;
-}): Promise<{
+export async function processResults(params: ProcessResultsParams): Promise<{
   learnings: string[];
   followUpQuestions: string[];
 }> {
-  const { query, content, numLearnings = 3, numFollowUpQuestions = 3 } = params;
+  const {
+    query,
+    content,
+    numLearnings = 3,
+    numFollowUpQuestions = 3,
+    model = 'deepseek-r1-671b'
+  } = params;
 
   const prompt = `Analyze the following content about "${query}":
 
@@ -138,6 +155,7 @@ Format your response with clear sections for "Key Learnings:" and "Follow-up Que
     system: systemPrompt(),
     prompt,
     temperature: 0.5,
+    model,
   });
 
   if (result.success && 'learnings' in result.data) {

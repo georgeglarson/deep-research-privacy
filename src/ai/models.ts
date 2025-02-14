@@ -8,7 +8,9 @@ export type ModelTrait =
   | 'fastest' // Optimized for speed
   | 'most_uncensored' // Provides unfiltered responses
   | 'most_intelligent' // Best for complex reasoning
-  | 'default_code'; // Optimized for code tasks
+  | 'default_code' // Optimized for code tasks
+  | 'multimodal' // Can process images and PDFs
+  | 'dynamic_reasoning'; // Advanced reasoning for path planning
 
 /**
  * Specification for a Venice.ai model, including its capabilities and source.
@@ -52,16 +54,22 @@ export const VENICE_MODELS = {
     modelSource: 'https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF',
   },
 
+  'qwen-vl': {
+    availableContextTokens: 32768,
+    traits: ['multimodal'] as const,
+    modelSource: 'https://huggingface.co/Qwen/Qwen2.5-VL',
+  },
+
   'deepseek-r1-llama-70b': {
     availableContextTokens: 65536,
-    traits: [] as const,
+    traits: ['dynamic_reasoning'] as const,
     modelSource:
       'https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-70B',
   },
 
   'deepseek-r1-671b': {
     availableContextTokens: 131072,
-    traits: [] as const,
+    traits: ['dynamic_reasoning', 'most_intelligent'] as const,
     modelSource: 'https://huggingface.co/deepseek-ai/DeepSeek-R1',
   },
 } as const;
