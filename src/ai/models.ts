@@ -3,64 +3,67 @@
  * These help in selecting the most appropriate model for different tasks.
  */
 export type ModelTrait =
-  | 'function_calling_default'  // Supports function calling API
-  | 'default'                   // Good general-purpose model
-  | 'fastest'                   // Optimized for speed
-  | 'most_uncensored'          // Provides unfiltered responses
-  | 'most_intelligent'         // Best for complex reasoning
-  | 'default_code';            // Optimized for code tasks
+  | 'function_calling_default' // Supports function calling API
+  | 'default' // Good general-purpose model
+  | 'fastest' // Optimized for speed
+  | 'most_uncensored' // Provides unfiltered responses
+  | 'most_intelligent' // Best for complex reasoning
+  | 'default_code'; // Optimized for code tasks
 
 /**
  * Specification for a Venice.ai model, including its capabilities and source.
  */
 export interface ModelSpec {
-  availableContextTokens: number;  // Maximum context length the model supports
-  traits: readonly ModelTrait[];   // Model's capabilities
-  modelSource: string;            // Link to model on HuggingFace
+  availableContextTokens: number; // Maximum context length the model supports
+  traits: readonly ModelTrait[]; // Model's capabilities
+  modelSource: string; // Link to model on HuggingFace
 }
 
 export const VENICE_MODELS = {
   'llama-3.3-70b': {
     availableContextTokens: 65536,
     traits: ['function_calling_default', 'default'] as const,
-    modelSource: 'https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct'
+    modelSource: 'https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct',
   },
 
   'llama-3.2-3b': {
     availableContextTokens: 131072,
     traits: ['fastest'] as const,
-    modelSource: 'https://huggingface.co/meta-llama/Llama-3.2-3B'
+    modelSource: 'https://huggingface.co/meta-llama/Llama-3.2-3B',
   },
 
   'dolphin-2.9.2-qwen2-72b': {
     availableContextTokens: 32768,
     traits: ['most_uncensored'] as const,
-    modelSource: 'https://huggingface.co/cognitivecomputations/dolphin-2.9.2-qwen2-72b'
+    modelSource:
+      'https://huggingface.co/cognitivecomputations/dolphin-2.9.2-qwen2-72b',
   },
 
   'llama-3.1-405b': {
     availableContextTokens: 63920,
     traits: ['most_intelligent'] as const,
-    modelSource: 'https://huggingface.co/meta-llama/Meta-Llama-3.1-405B-Instruct'
+    modelSource:
+      'https://huggingface.co/meta-llama/Meta-Llama-3.1-405B-Instruct',
   },
 
-  'qwen32b': {
+  qwen32b: {
     availableContextTokens: 131072,
     traits: ['default_code'] as const,
-    modelSource: 'https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF'
+    modelSource: 'https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF',
   },
 
   'deepseek-r1-llama-70b': {
     availableContextTokens: 65536,
     traits: [] as const,
-    modelSource: 'https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-70B'
+    modelSource:
+      'https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-70B',
   },
 
   'deepseek-r1-671b': {
     availableContextTokens: 131072,
     traits: [] as const,
-    modelSource: 'https://huggingface.co/deepseek-ai/DeepSeek-R1'
-  }
+    modelSource: 'https://huggingface.co/deepseek-ai/DeepSeek-R1',
+  },
 } as const;
 
 export type VeniceModel = keyof typeof VENICE_MODELS;
@@ -96,12 +99,8 @@ export function suggestModel(params: {
   needsSpeed?: boolean;
   isCodeTask?: boolean;
 }): VeniceModel {
-  const {
-    needsFunctionCalling,
-    needsLargeContext,
-    needsSpeed,
-    isCodeTask
-  } = params;
+  const { needsFunctionCalling, needsLargeContext, needsSpeed, isCodeTask } =
+    params;
 
   if (isCodeTask) return 'qwen32b';
   if (needsSpeed) return 'llama-3.2-3b';

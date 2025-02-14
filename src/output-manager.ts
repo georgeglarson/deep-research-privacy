@@ -19,12 +19,15 @@ export class OutputManager {
   updateProgress(progress: ResearchProgress): void {
     const totalSteps = progress.totalDepth * progress.totalBreadth;
     const completedSteps = progress.completedQueries || 0;
-    const percent = Math.min(100, Math.max(0, Math.round((completedSteps / totalSteps) * 100)));
+    const percent = Math.min(
+      100,
+      Math.max(0, Math.round((completedSteps / totalSteps) * 100)),
+    );
     const filledLength = Math.min(
       this.progressBarWidth,
-      Math.max(0, Math.round((this.progressBarWidth * percent) / 100))
+      Math.max(0, Math.round((this.progressBarWidth * percent) / 100)),
     );
-    
+
     const bar =
       '[' +
       '█'.repeat(filledLength) +
@@ -32,7 +35,7 @@ export class OutputManager {
       ']';
 
     process.stdout.write(
-      `\rOverall Progress: ${bar} ${percent}%\nDepth: ${progress.currentDepth}/${progress.totalDepth} | Breadth: ${progress.currentBreadth}/${progress.totalBreadth} | Queries: ${progress.completedQueries}/${progress.totalQueries}\nCurrent Query: ${progress.currentQuery || 'Initializing...'}${this.spinnerStates[this.spinnerIndex]}`
+      `\rOverall Progress: ${bar} ${percent}%\nDepth: ${progress.currentDepth}/${progress.totalDepth} | Breadth: ${progress.currentBreadth}/${progress.totalBreadth} | Queries: ${progress.completedQueries}/${progress.totalQueries}\nCurrent Query: ${progress.currentQuery || 'Initializing...'}${this.spinnerStates[this.spinnerIndex]}`,
     );
   }
 

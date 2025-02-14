@@ -13,11 +13,11 @@ export class RateLimiter {
     const now = Date.now();
     const timeSinceLastRequest = now - this.lastRequestTime;
     const waitTime = Math.max(0, this.minDelay - timeSinceLastRequest);
-    
+
     if (waitTime > 0) {
       await new Promise(resolve => setTimeout(resolve, waitTime));
     }
-    
+
     this.lastRequestTime = Date.now();
   }
 }
@@ -35,7 +35,10 @@ export function cleanQuery(query: string): string {
 /**
  * Ensures a directory exists, creating it if necessary
  */
-export async function ensureDir(fs: typeof import('fs/promises'), path: string): Promise<void> {
+export async function ensureDir(
+  fs: typeof import('fs/promises'),
+  path: string,
+): Promise<void> {
   try {
     await fs.access(path);
   } catch {

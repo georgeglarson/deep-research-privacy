@@ -21,7 +21,10 @@ When analyzing content:
 IMPORTANT: Format your responses as lists without any introductory text or explanations.`;
 }
 
-export function queryExpansionTemplate(query: string, learnings?: string[]): string {
+export function queryExpansionTemplate(
+  query: string,
+  learnings?: string[],
+): string {
   return `Generate specific research questions about: "${query}"
 
 ${learnings ? `Previous Findings:\n${learnings.join('\n')}` : ''}

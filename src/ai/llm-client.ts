@@ -1,5 +1,5 @@
 import { output } from '../output-manager.js';
-import { VeniceModel, isValidModel, VENICE_MODELS } from './models.js';
+import { isValidModel, VENICE_MODELS, VeniceModel } from './models.js';
 
 export interface LLMConfig {
   apiKey?: string;
@@ -46,7 +46,7 @@ export class LLMError extends Error {
   constructor(
     public code: string,
     message: string,
-    public originalError?: unknown
+    public originalError?: unknown,
   ) {
     super(message);
     this.name = 'LLMError';
@@ -74,12 +74,12 @@ function isRetryableError(error: unknown): boolean {
     const status = (error as { status: number }).status;
     if (status === 429 || status >= 500) return true;
   }
-  
+
   if (error && typeof error === 'object' && 'code' in error) {
     const code = (error as { code: string }).code;
     if (code === 'ECONNRESET' || code === 'ETIMEDOUT') return true;
   }
-  
+
   return false;
 }
 
@@ -94,7 +94,7 @@ export class LLMClient {
     if (!apiKey) {
       throw new LLMError(
         'ConfigError',
-        'API key is required. Provide it in constructor or set VENICE_API_KEY environment variable.'
+        'API key is required. Provide it in constructor or set VENICE_API_KEY environment variable.',
       );
     }
 
@@ -102,7 +102,7 @@ export class LLMClient {
     if (!isValidModel(model)) {
       throw new LLMError(
         'ConfigError',
-        `Invalid model: ${model}. Available models: ${Object.keys(VENICE_MODELS).join(', ')}`
+        `Invalid model: ${model}. Available models: ${Object.keys(VENICE_MODELS).join(', ')}`,
       );
     }
 
@@ -116,7 +116,7 @@ export class LLMClient {
 
   private getRateLimitDelay(): number {
     if (this.rateLimitInfo?.resetIn) {
-      return (this.rateLimitInfo.resetIn * 1000) + 100;
+      return this.rateLimitInfo.resetIn * 1000 + 100;
     }
     return this.config.retry.initialDelay;
   }
@@ -137,42 +137,47 @@ export class LLMClient {
 
     for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
       try {
-        const response = await fetch(`${this.config.baseUrl}/chat/completions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.config.apiKey}`,
+        const response = await fetch(
+          `${this.config.baseUrl}/chat/completions`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.config.apiKey}`,
+            },
+            body: JSON.stringify({
+              model: this.config.model,
+              messages: [
+                { role: 'system', content: system },
+                { role: 'user', content: prompt },
+              ],
+              temperature,
+              max_tokens: Math.min(maxTokens, maxContextTokens),
+              top_p: 0.95,
+            }),
           },
-          body: JSON.stringify({
-            model: this.config.model,
-            messages: [
-              { role: 'system', content: system },
-              { role: 'user', content: prompt }
-            ],
-            temperature,
-            max_tokens: Math.min(maxTokens, maxContextTokens),
-            top_p: 0.95,
-          }),
-        });
+        );
 
         this.rateLimitInfo = getRateLimitInfo(response.headers);
 
         if (!response.ok) {
-          const error = await response.json().catch(() => ({ error: response.statusText }));
+          const error = await response
+            .json()
+            .catch(() => ({ error: response.statusText }));
           throw new LLMError(
             'APIError',
             `Venice API error: ${error.error || response.statusText}`,
-            { status: response.status, error }
+            { status: response.status, error },
           );
         }
 
         const data = await response.json();
-        
+
         if (!data.choices?.[0]?.message?.content) {
           throw new LLMError(
             'InvalidResponse',
             'Invalid response format from Venice API',
-            data
+            data,
           );
         }
 
@@ -181,7 +186,6 @@ export class LLMClient {
           model: this.config.model,
           timestamp: new Date().toISOString(),
         };
-
       } catch (error: unknown) {
         lastError = error;
 
@@ -193,11 +197,16 @@ export class LLMClient {
           throw new LLMError(
             'MaxRetriesExceeded',
             `Failed after ${retryConfig.maxAttempts} attempts`,
-            lastError
+            lastError,
           );
         }
 
-        if (error && typeof error === 'object' && 'status' in error && (error as { status: number }).status === 429) {
+        if (
+          error &&
+          typeof error === 'object' &&
+          'status' in error &&
+          (error as { status: number }).status === 429
+        ) {
           delay = this.getRateLimitDelay();
           output.log(`Rate limit exceeded, waiting ${delay}ms before retry...`);
         } else if (retryConfig.useExponentialBackoff) {
@@ -211,7 +220,7 @@ export class LLMClient {
     throw new LLMError(
       'UnknownError',
       'An unexpected error occurred',
-      lastError
+      lastError,
     );
   }
 }

@@ -44,13 +44,14 @@ export class QueryProcessor extends BaseProcessor<QueryResult> {
           success: true,
           queries: questions.map(query => ({
             query,
-            researchGoal: `Research and analyze: ${query.replace(/\?$/, '')}`
-          }))
+            researchGoal: `Research and analyze: ${query.replace(/\?$/, '')}`,
+          })),
         };
       }
 
-      const statements = this.extractLines(content)
-        .filter(line => !line.includes('?'));
+      const statements = this.extractLines(content).filter(
+        line => !line.includes('?'),
+      );
 
       if (statements.length > 0) {
         return {
@@ -58,8 +59,8 @@ export class QueryProcessor extends BaseProcessor<QueryResult> {
           success: true,
           queries: statements.map(statement => ({
             query: `What are the details of ${statement}?`,
-            researchGoal: `Research and analyze: ${statement}`
-          }))
+            researchGoal: `Research and analyze: ${statement}`,
+          })),
         };
       }
 
@@ -67,14 +68,14 @@ export class QueryProcessor extends BaseProcessor<QueryResult> {
         rawContent: content,
         success: false,
         error: 'No valid questions or statements found',
-        queries: []
+        queries: [],
       };
     } catch (error) {
       return {
         rawContent: content,
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
-        queries: []
+        queries: [],
       };
     }
   }
@@ -83,10 +84,12 @@ export class QueryProcessor extends BaseProcessor<QueryResult> {
     return {
       rawContent: '',
       success: true,
-      queries: [{
-        query: 'What are the fundamental principles involved?',
-        researchGoal: 'Research and analyze core concepts'
-      }]
+      queries: [
+        {
+          query: 'What are the fundamental principles involved?',
+          researchGoal: 'Research and analyze core concepts',
+        },
+      ],
     };
   }
 }
@@ -107,16 +110,20 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
       let isQuestionSection = false;
 
       for (const line of lines) {
-        if (line.toLowerCase().includes('key learning') || 
-            line.toLowerCase().includes('insight') ||
-            line.toLowerCase().includes('finding')) {
+        if (
+          line.toLowerCase().includes('key learning') ||
+          line.toLowerCase().includes('insight') ||
+          line.toLowerCase().includes('finding')
+        ) {
           isLearningSection = true;
           isQuestionSection = false;
           continue;
         }
-        
-        if (line.toLowerCase().includes('follow-up') || 
-            line.toLowerCase().includes('question')) {
+
+        if (
+          line.toLowerCase().includes('follow-up') ||
+          line.toLowerCase().includes('question')
+        ) {
           isLearningSection = false;
           isQuestionSection = true;
           continue;
@@ -124,7 +131,8 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
 
         if (line.includes('?')) {
           questions.push(line);
-        } else if (line.length > 20) {  // Minimum length for meaningful content
+        } else if (line.length > 20) {
+          // Minimum length for meaningful content
           learnings.push(line);
         }
       }
@@ -144,7 +152,7 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
           rawContent: content,
           success: true,
           learnings,
-          followUpQuestions: questions
+          followUpQuestions: questions,
         };
       }
 
@@ -153,7 +161,7 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
         success: false,
         error: 'No valid learnings or questions found',
         learnings: [],
-        followUpQuestions: []
+        followUpQuestions: [],
       };
     } catch (error) {
       return {
@@ -161,7 +169,7 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
         learnings: [],
-        followUpQuestions: []
+        followUpQuestions: [],
       };
     }
   }
@@ -171,7 +179,7 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
       rawContent: '',
       success: true,
       learnings: [],
-      followUpQuestions: []
+      followUpQuestions: [],
     };
   }
 }
@@ -188,21 +196,21 @@ export class ReportProcessor extends BaseProcessor<ReportResult> {
           rawContent: content,
           success: false,
           error: 'Empty content',
-          reportMarkdown: ''
+          reportMarkdown: '',
         };
       }
 
       return {
         rawContent: content,
         success: true,
-        reportMarkdown: content
+        reportMarkdown: content,
       };
     } catch (error) {
       return {
         rawContent: content,
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
-        reportMarkdown: ''
+        reportMarkdown: '',
       };
     }
   }
@@ -211,7 +219,7 @@ export class ReportProcessor extends BaseProcessor<ReportResult> {
     return {
       rawContent: '',
       success: true,
-      reportMarkdown: ''
+      reportMarkdown: '',
     };
   }
 }
