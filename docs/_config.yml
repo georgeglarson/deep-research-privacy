@@ -1,0 +1,25 @@
+title: Deep Research Privacy Edition
+description: A privacy-focused research tool powered by uncensored AI and private search
+url: https://georgeglarson.github.io/deep-research-privacy
+baseurl: /deep-research-privacy
+
+# Build settings
+markdown: kramdown
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - README.md
+  - CONTRIBUTING.md
+  - LICENSE
+  - .gitignore
+
+# Theme settings
+theme: null
+plugins: []
+
+# Site settings
+lang: en
+encoding: UTF-8

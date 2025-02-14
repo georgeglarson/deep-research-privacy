@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research: Privacy Edition</title>
+    <meta name="description" content="A privacy-focused research tool powered by uncensored AI and private search">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Preload key assets -->
+    <link rel="preload" href="/assets/js/terminal.js" as="script" type="module">
+</head>
+<body>
+    <header class="nav">
+        <div class="nav__logo">
+            <img src="/assets/img/logo.svg" alt="Deep Research" width="40" height="40">
+            <span>Deep Research</span>
+        </div>
+        <nav class="nav__links">
+            <a href="/" class="active">Home</a>
+            <a href="/demo">Try It</a>
+            <a href="/quickstart">Quick Start</a>
+            <a href="/about">About</a>
+        </nav>
+        <button class="nav__theme-toggle" aria-label="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path class="moon" d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero__content">
+                <h1>Privacy-First Research Tool</h1>
+                <p class="hero__subtitle">Powered by uncensored AI and private search</p>
+                
+                <!-- Terminal Demo -->
+                <div class="terminal">
+                    <div class="terminal__header">
+                        <span class="terminal__title">Try Deep Research</span>
+                        <div class="terminal__controls">
+                            <button class="terminal__minimize"></button>
+                            <button class="terminal__maximize"></button>
+                            <button class="terminal__close"></button>
+                        </div>
+                    </div>
+                    <div class="terminal__body">
+                        <div class="terminal__output">Welcome to Deep Research: Privacy Edition
+Type 'help' to get started or try an example below</div>
+                        <div class="terminal__input-line">
+                            <span class="terminal__prompt">$</span>
+                            <input type="text" class="terminal__input" aria-label="Terminal input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero__examples">
+                    <button class="demo-player__example" data-command="research &quot;privacy in AI&quot;">
+                        Research AI Privacy
+                    </button>
+                    <button class="demo-player__example" data-command="compare &quot;Venice vs OpenAI&quot;">
+                        Compare AI Models
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <div class="features__grid">
+                <div class="feature-card">
+                    <div class="feature-card__icon">🔒</div>
+                    <h3>True Privacy</h3>
+                    <p>Your research queries stay private with no logging policy</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">🤖</div>
+                    <h3>Uncensored Research</h3>
+                    <p>Access Venice.ai's unrestricted models for genuine research freedom</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">💻</div>
+                    <h3>Local Processing</h3>
+                    <p>Keep sensitive data on your machine, not in the cloud</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">📖</div>
+                    <h3>Open Source</h3>
+                    <p>100% transparent, audit everything yourself</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to Start?</h2>
+            <div class="cta__buttons">
+                <a href="/demo" class="button button--primary">Try Demo</a>
+                <a href="https://github.com/georgeglarson/deep-research-privacy" class="button button--secondary">
+                    View on GitHub
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="/about">About</a>
+                <a href="/quickstart">Quick Start</a>
+                <a href="https://github.com/georgeglarson/deep-research-privacy">GitHub</a>
+                <a href="mailto:george.g.larson@gmail.com">Contact</a>
+            </div>
+            <p class="footer__copyright">© 2024 Deep Research. ISC License.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { TerminalManager } from '/assets/js/terminal.js';
+        import { ThemeManager } from '/assets/js/theme.js';
+
+        // Initialize components
+        new TerminalManager(document.querySelector('.terminal'), { demo: true });
+        new ThemeManager();
+    </script>
+</body>
+</html>
