@@ -54,10 +54,10 @@ export const VENICE_MODELS = {
     modelSource: 'https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF',
   },
 
-  'qwen-vl': {
-    availableContextTokens: 32768,
+  'qwen-2.5-vl': {
+    availableContextTokens: 131072,
     traits: ['multimodal'] as const,
-    modelSource: 'https://huggingface.co/Qwen/Qwen2.5-VL',
+    modelSource: 'https://huggingface.co/Qwen/Qwen2.5-VL-72B-Instruct',
   },
 
   'deepseek-r1-llama-70b': {

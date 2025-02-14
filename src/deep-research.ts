@@ -34,6 +34,11 @@ export interface ResearchProgress {
 export interface ResearchResult {
   learnings: string[];
   sources: string[];
+  models?: {
+    pathPlanning?: string;
+    multimodal?: string;
+    contentAnalysis?: string;
+  };
 }
 
 /**

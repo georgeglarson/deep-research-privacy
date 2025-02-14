@@ -82,7 +82,7 @@ export class DynamicResearchPath {
     const results = await processResults({
       query: this.config.query,
       content,
-      model: 'qwen-vl' as VeniceModel,
+      model: 'qwen-2.5-vl' as VeniceModel,
     });
     
     return results;
@@ -210,6 +210,11 @@ export class DynamicResearchPath {
     return {
       learnings: [...new Set(allResults.learnings)],
       sources: [...new Set(allResults.sources)],
+      models: {
+        pathPlanning: 'deepseek-r1-671b',
+        multimodal: 'qwen-2.5-vl',
+        contentAnalysis: 'deepseek-r1-671b'
+      }
     };
   }
 
