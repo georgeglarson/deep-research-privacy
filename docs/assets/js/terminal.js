@@ -27,6 +27,8 @@ export class TerminalManager {
                 '4. Save findings to a markdown file',
                 '',
                 'Type "example" to see sample output',
+                '',
+                'View source code: https://github.com/georgeglarson/deep-research-privacy',
                 ''
             ],
             'research "privacy in ai"': [
