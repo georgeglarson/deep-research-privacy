@@ -11,14 +11,22 @@ export class TerminalManager {
         // Demo mode responses
         this.demoResponses = {
             'help': [
-                'Available commands:',
+                'Deep Research CLI Commands:',
                 '',
-                'research "topic"      - Research a specific topic',
-                'compare "A vs B"      - Compare two subjects',
-                'privacy              - Learn about our privacy features',
-                'models              - List available AI models',
-                'clear               - Clear the terminal',
-                'help                - Show this help message',
+                'research <query> [breadth] [depth]',
+                '  - Query: Your research topic (required)',
+                '  - Breadth: Number of parallel searches (2-10, default: 3)',
+                '  - Depth: How deep to explore each path (1-5, default: 2)',
+                '',
+                'Example: research "quantum computing" 5 3',
+                '',
+                'The tool will:',
+                '1. Search using Brave Search API',
+                '2. Process results with Venice.ai models',
+                '3. Generate a research summary',
+                '4. Save findings to a markdown file',
+                '',
+                'Type "example" to see sample output',
                 ''
             ],
             'research "privacy in ai"': [
