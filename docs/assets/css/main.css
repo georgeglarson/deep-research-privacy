@@ -823,6 +823,68 @@ body {
     color: var(--color-text-muted);
 }
 
+/* Support Section */
+.support {
+    padding: 4rem 2rem;
+    background: var(--color-card-bg);
+}
+
+.support__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.support__content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.support__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.support-card {
+    background: var(--color-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.support-card__icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.support-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.support-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.support-links a {
+    color: var(--color-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: var(--color-card-bg);
+    transition: background 0.2s;
+}
+
+.support-links a:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav__links {
