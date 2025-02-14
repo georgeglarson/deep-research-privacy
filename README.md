@@ -143,22 +143,22 @@ That's it! The exact same code runs in an isolated container with all dependenci
 The project demonstrates clean architecture with focused components:
 
 ### Core Components
+- `src/run.ts`: Application entry point
 - `src/deep-research.ts`: Main research engine
+- `src/research-path.ts`: Research path handling
 - `src/ai/llm-client.ts`: Venice.ai API client
 - `src/ai/models.ts`: Model definitions and selection
 - `src/search/providers.ts`: Search provider implementation
 
 ### Support Components
 - `src/output-manager.ts`: Progress tracking
+- `src/utils.ts`: Utility functions
+- `src/ai/providers.ts`: AI integration
 - `src/ai/response-processor.ts`: Response handling
-- `src/ai/providers.ts`: API integration
 
-### Development Tools
-- `src/test-search.ts`: Multi-purpose testing utility
-  * Verifies search functionality
-  * Demonstrates API usage
-  * Helps debug issues
-  * Shows best practices
+### Testing Components
+- `tests/search/search.test.ts`: Search provider tests
+- `tests/ai/text-splitter.test.ts`: Text processing tests
 
 ## Learning Focus
 
