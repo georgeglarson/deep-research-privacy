@@ -21,7 +21,7 @@
     <meta name="twitter:description" content="Privacy-focused research tool powered by uncensored AI and private search">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/deep-research-privacy/assets/img/favicon.svg">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,10 +29,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="/deep-research-privacy/assets/css/main.css">
     
     <!-- Preload key assets -->
-    <link rel="preload" href="assets/js/terminal.js" as="script" type="module">
+    <link rel="preload" href="/deep-research-privacy/assets/js/terminal.js" as="script">
 
     <!-- Schema.org markup for Google -->
     <script type="application/ld+json">
@@ -69,7 +69,7 @@
 <body>
     <header class="nav">
         <div class="nav__logo">
-            <img src="assets/img/logo.svg" alt="Deep Research" width="40" height="40">
+            <img src="/deep-research-privacy/assets/img/logo.svg" alt="Deep Research" width="40" height="40">
             <span>Deep Research</span>
         </div>
         <nav class="nav__links">
@@ -197,8 +197,8 @@ Type 'help' to get started or try an example below</div>
 
     <!-- Scripts -->
     <script type="module">
-        import { TerminalManager } from 'assets/js/terminal.js';
-        import { ThemeManager } from 'assets/js/theme.js';
+        import { TerminalManager } from '/deep-research-privacy/assets/js/terminal.js';
+        import { ThemeManager } from '/deep-research-privacy/assets/js/theme.js';
 
         // Initialize components
         new TerminalManager(document.querySelector('.terminal'), { demo: true });
