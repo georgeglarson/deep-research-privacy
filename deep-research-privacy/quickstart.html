@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start Guide - Deep Research Privacy Edition</title>
+    <meta name="description" content="Get started with Deep Research: A privacy-focused research tool powered by Venice.ai and Brave Search">
+    <meta name="keywords" content="deep research setup, privacy research tool setup, Venice.ai integration, Brave Search setup, research privacy guide">
+    <meta name="author" content="George Larson">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+</head>
+<body>
+    <header class="nav">
+        <div class="nav__logo">
+            <img src="assets/img/logo.svg" alt="Deep Research" width="40" height="40">
+            <span>Deep Research</span>
+        </div>
+        <nav class="nav__links">
+            <a href=".">Home</a>
+            <a href="https://github.com/georgeglarson/deep-research-privacy" target="_blank" rel="noopener">GitHub</a>
+            <a href="quickstart.html" class="active">Quick Start</a>
+            <a href="about.html">About</a>
+        </nav>
+        <button class="nav__theme-toggle" aria-label="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path class="moon" d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </header>
+
+    <main class="quickstart">
+        <section class="quickstart-intro">
+            <div class="quickstart-intro__content">
+                <h1>Quick Start Guide</h1>
+                <p>Get started with Deep Research's core functionality</p>
+            </div>
+        </section>
+
+        <section class="quickstart-steps">
+            <div class="quickstart-steps__content">
+                <div class="step-card">
+                    <div class="step-card__number">1</div>
+                    <div class="step-card__content">
+                        <h2>Core Setup</h2>
+                        <div class="step-details">
+                            <h3>Get Your API Keys</h3>
+                            <ol>
+                                <li>Visit <a href="https://venice.ai/chat?ref=VB8W1j" target="_blank" rel="noopener">Venice.ai</a>
+                                    <ul>
+                                        <li>Sign up for an account</li>
+                                        <li>Navigate to API settings</li>
+                                        <li>Generate a new API key</li>
+                                    </ul>
+                                </li>
+                                <li>Visit <a href="https://api.search.brave.com/app" target="_blank" rel="noopener">Brave Search API</a>
+                                    <ul>
+                                        <li>Create a developer account</li>
+                                        <li>Visit API Keys section</li>
+                                        <li>Generate a new API key</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-card__number">2</div>
+                    <div class="step-card__content">
+                        <h2>Installation</h2>
+                        <div class="step-details">
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">bash</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code># Clone the repository
+git clone https://github.com/georgeglarson/deep-research-privacy.git
+cd deep-research-privacy
+
+# Copy example config
+cp .env.example .env</code></pre>
+                            </div>
+
+                            <p>Edit .env with your API keys:</p>
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">env</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code>VENICE_API_KEY=your_venice_api_key_here
+BRAVE_API_KEY=your_brave_search_api_key_here</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-card__number">3</div>
+                    <div class="step-card__content">
+                        <h2>Basic Usage</h2>
+                        <div class="step-details">
+                            <h3>Quick Start</h3>
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">bash</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code># Install dependencies
+npm install
+
+# Start Deep Research
+npm start</code></pre>
+                            </div>
+
+                            <p>You'll be prompted to:</p>
+                            <ul>
+                                <li>Enter your research topic</li>
+                                <li>Choose research breadth (2-10, default: 3)</li>
+                                <li>Choose research depth (1-5, default: 2)</li>
+                            </ul>
+                            
+                            <h3>Advanced Usage</h3>
+                            <p>You can also specify parameters directly in the command:</p>
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">bash</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code># Specify all parameters in one command
+npm start -- research "quantum computing" --breadth 3 --depth 2</code></pre>
+                            </div>
+
+                            <div class="parameter-guide">
+                                <h4>Understanding Parameters:</h4>
+                                <ul>
+                                    <li><strong>Breadth (2-10):</strong> Number of sources to analyze
+                                        <ul>
+                                            <li>Default: 3</li>
+                                            <li>Higher values = more diverse sources</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Depth (1-5):</strong> How deeply to analyze each source
+                                        <ul>
+                                            <li>Default: 2</li>
+                                            <li>Higher values = more detailed analysis</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Model:</strong> AI model to use
+                                        <ul>
+                                            <li>Default: deepseek-r1-671b (best for deep research)</li>
+                                            <li>llama-3.2-3b (fastest)</li>
+                                            <li>llama-3.1-405b (most intelligent)</li>
+                                            <li>dolphin-2.9.2-qwen2-72b (most uncensored)</li>
+                                            <li>Or specify any model name directly</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">bash</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code># Use a specific model
+npm start -- research "quantum computing" --model llama-3.1-405b</code></pre>
+                            </div>
+
+                            <p>Results are automatically saved to the 'research' directory as markdown files.</p>
+
+                            <h3>Real-time Monitoring (Optional)</h3>
+                            <p>For detailed progress visualization, use two terminal windows:</p>
+                            
+                            <div class="code-block">
+                                <div class="code-block__header">
+                                    <span class="code-block__language">bash</span>
+                                    <button class="code-block__copy">Copy</button>
+                                </div>
+                                <pre><code># Terminal 1: Start the visualization UI
+npm run start:ui
+
+# Terminal 2: Add --ui flag to your research
+npm start -- research "your topic" --breadth 3 --depth 2 --ui</code></pre>
+                            </div>
+
+                            <p>The UI dashboard provides:</p>
+                            <ul>
+                                <li>Real-time progress tracking</li>
+                                <li>Live API call monitoring</li>
+                                <li>Search result visualization</li>
+                                <li>Knowledge synthesis updates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+               <div class="step-card">
+                   <div class="step-card__number">4</div>
+                   <div class="step-card__content">
+                       <h2>Example Research</h2>
+                       <div class="step-details">
+                           <p>Here are some example research queries with different parameters:</p>
+                           <div class="code-block">
+                               <div class="code-block__header">
+                                   <span class="code-block__language">bash</span>
+                                   <button class="code-block__copy">Copy</button>
+                               </div>
+                               <pre><code># Broad overview (many sources, quick analysis)
+npm start -- research "AI ethics" --breadth 5 --depth 1
+
+# Deep dive (fewer sources, thorough analysis)
+npm start -- research "quantum computing basics" --breadth 2 --depth 3
+
+# Balanced research (recommended for most topics)
+npm start -- research "climate change solutions" --breadth 3 --depth 2</code></pre>
+                           </div>
+                           <p>Each approach yields different insights:</p>
+                           <ul>
+                               <li><strong>High breadth (4-10):</strong> Best for new topics or getting multiple perspectives</li>
+                               <li><strong>High depth (3-5):</strong> Ideal for technical subjects requiring detailed understanding</li>
+                               <li><strong>Balanced (3,2):</strong> Good default for most research needs</li>
+                           </ul>
+                           
+                           <div class="note">
+                               <p><strong>Tip:</strong> Add the <code>--ui</code> flag to any command to enable real-time visualization</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+        </section>
+
+        <section class="quickstart-next">
+            <div class="quickstart-next__content">
+                <h2>Next Steps</h2>
+                <div class="next-steps-grid">
+                    <div class="next-step-card">
+                        <h3>📚 Advanced Usage</h3>
+                        <p>Learn about research paths, model selection, and configuration options.</p>
+                        <a href="https://github.com/georgeglarson/deep-research-privacy#readme" class="button button--secondary">View Docs</a>
+                    </div>
+                    <div class="next-step-card">
+                        <h3>⭐ Support the Project</h3>
+                        <p>Star us on GitHub and stay updated with new releases.</p>
+                        <a href="https://github.com/georgeglarson/deep-research-privacy" class="button button--secondary">Star Project</a>
+                    </div>
+                    <div class="next-step-card">
+                        <h3>🤝 Get Involved</h3>
+                        <p>Join our community and contribute to the project.</p>
+                        <a href="https://github.com/georgeglarson/deep-research-privacy/blob/main/CONTRIBUTING.md" class="button button--secondary">Contribute</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="about.html">About</a>
+                <a href="quickstart.html">Quick Start</a>
+                <a href="https://github.com/georgeglarson/deep-research-privacy">GitHub</a>
+                <a href="mailto:george.g.larson@gmail.com">Contact</a>
+            </div>
+            <p class="footer__copyright">© 2024 Deep Research. ISC License.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { ThemeManager } from '/deep-research-privacy/assets/js/theme.js';
+        new ThemeManager();
+
+        // Setup copy buttons
+        document.querySelectorAll('.code-block__copy').forEach(button => {
+            button.addEventListener('click', () => {
+                const code = button.closest('.code-block').querySelector('code').textContent;
+                navigator.clipboard.writeText(code);
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 2000);
+            });
+        });
+    </script>
+</body>
+</html>

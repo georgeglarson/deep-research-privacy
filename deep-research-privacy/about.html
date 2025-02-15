@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Deep Research - Privacy-First AI Research Tool</title>
+    <meta name="description" content="Learn about Deep Research: A privacy-focused research tool combining AI technology with strong privacy principles">
+    <meta name="keywords" content="deep research, privacy research, AI privacy, uncensored AI, Venice.ai, Brave Search">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header class="nav">
+        <div class="nav__logo">
+            <img src="assets/img/logo.svg" alt="Deep Research" width="40" height="40">
+            <span>Deep Research</span>
+        </div>
+        <nav class="nav__links">
+            <a href=".">Home</a>
+            <a href="https://github.com/georgeglarson/deep-research-privacy" target="_blank" rel="noopener">GitHub</a>
+            <a href="quickstart.html">Quick Start</a>
+            <a href="about.html" class="active">About</a>
+        </nav>
+        <button class="nav__theme-toggle" aria-label="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path class="moon" d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </header>
+
+    <main class="about">
+        <section class="about-intro">
+            <div class="about-intro__content">
+                <h1>About Deep Research</h1>
+                <p>A mission to make AI research both powerful and private</p>
+            </div>
+        </section>
+
+        <section class="about-mission">
+            <div class="about-mission__content">
+                <h2>Technical Innovation</h2>
+                <p>Deep Research represents a new approach to AI research tools, combining advanced language models with robust privacy protections. Built with modern TypeScript and following clean architecture principles, it demonstrates how powerful AI capabilities can coexist with strong privacy guarantees.</p>
+                
+                <div class="mission-points">
+                    <div class="mission-point">
+                        <h3>Architecture</h3>
+                        <p>Clean, maintainable TypeScript codebase with comprehensive testing and documentation. Modular design enables easy integration of new AI models and search providers.</p>
+                    </div>
+                    <div class="mission-point">
+                        <h3>Privacy Engineering</h3>
+                        <p>Innovative local processing techniques and zero-logging architecture ensure research data never leaves your control. Built-in rate limiting and error recovery maintain reliability.</p>
+                    </div>
+                    <div class="mission-point">
+                        <h3>Integration Design</h3>
+                        <p>Seamless integration of Venice.ai's advanced models with Brave's private search, demonstrating practical privacy-preserving AI applications.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-connect">
+            <div class="about-connect__content">
+                <h2>Open Source Collaboration</h2>
+                <p>This project is maintained by <a href="resume.html">George Larson</a> as part of ongoing research into privacy-preserving AI systems. Contributions and feedback are welcome.</p>
+                <div class="connect-grid">
+                    <a href="https://github.com/georgeglarson/deep-research-privacy" target="_blank" rel="noopener" class="connect-card">
+                        <div class="connect-card__icon">🌟</div>
+                        <h3>GitHub</h3>
+                        <p>Explore the code</p>
+                    </a>
+                    <a href="https://github.com/georgeglarson/deep-research-privacy/issues" target="_blank" rel="noopener" class="connect-card">
+                        <div class="connect-card__icon">💡</div>
+                        <h3>Feature Requests</h3>
+                        <p>Share your ideas</p>
+                    </a>
+                    <a href="contributing.html" class="connect-card">
+                        <div class="connect-card__icon">🤝</div>
+                        <h3>Contribute</h3>
+                        <p>Join the project</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-contributors">
+            <div class="about-contributors__content">
+                <h2>Contributors</h2>
+                <p>Special thanks to the following contributors who have helped improve Deep Research:</p>
+                <ul class="contributors-list">
+                    <li>James Rennie - Model Selection Improvements</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="about.html">About</a>
+                <a href="quickstart.html">Quick Start</a>
+                <a href="https://github.com/georgeglarson/deep-research-privacy">GitHub</a>
+                <a href="mailto:george.g.larson@gmail.com">Contact</a>
+            </div>
+            <p class="footer__copyright">© 2024 Deep Research. MIT License.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { ThemeManager } from '/deep-research-privacy/assets/js/theme.js';
+        new ThemeManager();
+    </script>
+</body>
+</html>
