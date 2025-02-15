@@ -1,0 +1,44 @@
+{
+  "name": "deep-research-ui",
+  "version": "1.0.0",
+  "description": "Terminal UI for visualizing deep-research process",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "bin": {
+    "deep-research-ui": "./dist/server.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "keywords": [
+    "deep-research",
+    "terminal-ui",
+    "blessed"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/blessed": "^0.1.25",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.19",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

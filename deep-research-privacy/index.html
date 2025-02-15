@@ -17,8 +17,8 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@g3ologic">
-    <meta name="twitter:title" content="Deep Research: Privacy Edition">
-    <meta name="twitter:description" content="Privacy-focused research tool powered by uncensored AI and private search">
+    <meta name="twitter:title" content="Deep Research: Privacy Edition - AI-Powered Research Tool">
+    <meta name="twitter:description" content="Open-source research tool powered by uncensored AI and private search. Local processing, no data logging, and complete privacy for your research needs.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/deep-research-privacy/assets/img/favicon.svg">
@@ -40,7 +40,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Deep Research: Privacy Edition",
-      "applicationCategory": "ResearchApplication",
+      "applicationCategory": ["ResearchApplication", "PrivacyTool", "ArtificialIntelligenceApplication"],
       "operatingSystem": "Any",
       "offers": {
         "@type": "Offer",
@@ -56,13 +56,16 @@
       "softwareVersion": "1.0.0",
       "license": "ISC",
       "url": "https://georgeglarson.github.io/deep-research-privacy/",
-      "keywords": "privacy, AI research, uncensored AI, Venice.ai, private search, local processing",
+      "keywords": "privacy, AI research, uncensored AI, Venice.ai, private search, local processing, machine learning, data privacy, research tools",
       "featureList": [
         "True privacy with no logging policy",
         "Uncensored research with Venice.ai models",
         "Local processing for data privacy",
         "100% open source and transparent"
-      ]
+      ],
+      "programmingLanguage": ["TypeScript", "JavaScript", "Python"],
+      "requirements": "Modern web browser with JavaScript enabled",
+      "releaseNotes": "Privacy-focused research tool with local processing and no data logging"
     }
     </script>
 </head>
@@ -75,8 +78,8 @@
         <nav class="nav__links">
             <a href="." class="active">Home</a>
             <a href="https://github.com/georgeglarson/deep-research-privacy" target="_blank" rel="noopener">GitHub</a>
-            <a href="quickstart.html">Quick Start</a>
-            <a href="about.html">About</a>
+            <a href="/deep-research-privacy/quickstart.html">Quick Start</a>
+            <a href="/deep-research-privacy/about.html">About</a>
         </nav>
         <button class="nav__theme-toggle" aria-label="Toggle dark mode">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -104,7 +107,7 @@
                 
                 <!-- Terminal Demo (Work in Progress) -->
                 <div class="terminal">
-                    <div class="terminal__notice" style="color: #ff6b6b; text-align: center; padding: 10px; margin-bottom: 10px; border: 1px solid #ff6b6b; border-radius: 4px;">
+                    <div class="terminal__notice">
                         🚧 Live demo coming soon! This is a work in progress. 🚧
                     </div>
                     <div class="terminal__header">

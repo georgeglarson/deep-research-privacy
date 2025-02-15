@@ -7,10 +7,14 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "start": "tsx --env-file=.env src/run.ts",
+    "start:ui": "cd deep-research-ui && npm run start",
     "docker": "tsx src/run.ts",
     "test": "tsx --test tests/ai/text-splitter.test.ts tests/search/search.test.ts",
     "test:delay": "tsx --env-file=.env tests/delay.ts",
-    "test:search": "tsx --env-file=.env tests/search.ts"
+    "test:search": "tsx --env-file=.env tests/search.ts",
+    "test:venice": "tsx --env-file=.env tests/venice.ts",
+    "test:queries": "tsx --env-file=.env tests/queries.ts",
+    "postinstall": "cd deep-research-ui && npm install && npm run build"
   },
   "author": "george.g.larson@gmail.com",
   "license": "ISC",
@@ -23,7 +27,8 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "axios": "^1.6.7"
+    "axios": "^1.6.7",
+    "deep-research-ui": "file:deep-research-ui"
   },
   "engines": {
     "node": ">=18"

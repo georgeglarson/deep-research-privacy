@@ -1,3 +1,5 @@
+import { output } from './output-manager.js';
+
 /**
  * Generic rate limiter for API requests
  */
@@ -7,6 +9,7 @@ export class RateLimiter {
 
   constructor(delayMs: number) {
     this.minDelay = delayMs;
+    output.log(`RateLimiter initialized with ${delayMs}ms delay`);
   }
 
   async waitForNextSlot(): Promise<void> {
@@ -14,8 +17,15 @@ export class RateLimiter {
     const timeSinceLastRequest = now - this.lastRequestTime;
     const waitTime = Math.max(0, this.minDelay - timeSinceLastRequest);
 
+    output.log(`Rate limiter: Time since last request: ${timeSinceLastRequest}ms`);
+    output.log(`Rate limiter: Wait time needed: ${waitTime}ms`);
+
     if (waitTime > 0) {
+      output.log(`Rate limiter: Waiting ${waitTime}ms...`);
       await new Promise(resolve => setTimeout(resolve, waitTime));
+      output.log('Rate limiter: Wait complete');
+    } else {
+      output.log('Rate limiter: No wait needed');
     }
 
     this.lastRequestTime = Date.now();

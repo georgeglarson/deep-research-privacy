@@ -19,7 +19,18 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.
 5. Make sure your code lints.
-6. Issue that pull request!
+6. Add yourself to CONTRIBUTORS.md if you're making your first contribution
+7. Issue that pull request!
+
+## Getting Credit for Your Contributions
+
+We want to recognize everyone who helps make Deep Research better! When making your first contribution:
+
+1. Add yourself to [CONTRIBUTORS.md](CONTRIBUTORS.md) in your pull request
+2. Include a brief description of your contribution
+3. Your entry will automatically appear in both the README and About page
+
+This helps us maintain a single source of truth for all contributors and ensures everyone gets proper credit for their work.
 
 ## Any contributions you make will be under the ISC Software License
 In short, when you submit code changes, your submissions are understood to be under the same [ISC License](http://choosealicense.com/licenses/isc/) that covers the project. Feel free to contact the maintainers if that's a concern.

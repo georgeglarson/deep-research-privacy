@@ -1,48 +1,48 @@
 import { ResearchProgress } from './deep-research.js';
 
-export class OutputManager {
+class OutputManager {
+  private progressBar: string[] = [];
   private progressBarWidth = 20;
-  private spinnerStates = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
-  private spinnerIndex = 0;
-  private spinnerInterval: NodeJS.Timeout | null = null;
 
-  constructor() {
-    this.spinnerInterval = setInterval(() => {
-      this.spinnerIndex = (this.spinnerIndex + 1) % this.spinnerStates.length;
-    }, 80);
+  log(...args: any[]) {
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}]`, ...args);
   }
 
-  log(...args: unknown[]): void {
-    console.log(...args);
+  error(...args: any[]) {
+    const timestamp = new Date().toISOString();
+    console.error(`[${timestamp}]`, ...args);
   }
 
-  updateProgress(progress: ResearchProgress): void {
-    const totalSteps = progress.totalDepth * progress.totalBreadth;
-    const completedSteps = progress.completedQueries || 0;
-    const percent = Math.min(
-      100,
-      Math.max(0, Math.round((completedSteps / totalSteps) * 100)),
-    );
-    const filledLength = Math.min(
-      this.progressBarWidth,
-      Math.max(0, Math.round((this.progressBarWidth * percent) / 100)),
-    );
-
-    const bar =
-      '[' +
-      '█'.repeat(filledLength) +
-      '░'.repeat(this.progressBarWidth - filledLength) +
-      ']';
-
-    process.stdout.write(
-      `\rOverall Progress: ${bar} ${percent}%\nDepth: ${progress.currentDepth}/${progress.totalDepth} | Breadth: ${progress.currentBreadth}/${progress.totalBreadth} | Queries: ${progress.completedQueries}/${progress.totalQueries}\nCurrent Query: ${progress.currentQuery || 'Initializing...'}${this.spinnerStates[this.spinnerIndex]}`,
-    );
+  cleanup() {
+    // Clear progress bar
+    this.progressBar = [];
   }
 
-  cleanup(): void {
-    if (this.spinnerInterval) {
-      clearInterval(this.spinnerInterval);
-      this.spinnerInterval = null;
+  updateProgress(progress: ResearchProgress) {
+    const { completedQueries, totalQueries, currentQuery } = progress;
+
+    // Calculate percentage, ensuring it doesn't exceed 100%
+    const percent = Math.min(Math.round((completedQueries / Math.max(totalQueries, 1)) * 100), 100);
+
+    // Create progress bar
+    const filled = Math.round((percent / 100) * this.progressBarWidth);
+    const empty = this.progressBarWidth - filled;
+    const bar = `[${'█'.repeat(filled)}${'░'.repeat(Math.max(empty, 0))}]`;
+
+    // Format output
+    const status = `Overall Progress: ${bar} ${percent}%`;
+    const details = `Depth: ${progress.currentDepth}/${progress.totalDepth} | Breadth: ${progress.currentBreadth}/${progress.totalBreadth} | Queries: ${completedQueries}/${totalQueries}`;
+    const query = currentQuery ? `Current Query: ${currentQuery}` : '';
+
+    // Update progress display
+    this.log(status);
+    this.log(details);
+    if (query) this.log(query);
+
+    // Update analysis progress if available
+    if (progress.analysis) {
+      this.log('Analysis Progress:', progress.analysis);
     }
   }
 }

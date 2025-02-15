@@ -1,11 +1,18 @@
 import { output } from '../output-manager.js';
-import { isValidModel, VENICE_MODELS, VeniceModel } from './models.js';
+import { isValidModel, VENICE_MODELS, VeniceModel, suggestModel } from './models.js';
 
 export interface LLMConfig {
   apiKey?: string;
   model?: VeniceModel;
   baseUrl?: string;
   retry?: RetryConfig;
+  timeout?: number;
+  taskParams?: {
+    needsFunctionCalling?: boolean;
+    needsLargeContext?: boolean;
+    needsSpeed?: boolean;
+    isCodeTask?: boolean;
+  };
 }
 
 export interface RetryConfig {
@@ -31,6 +38,18 @@ interface RateLimitInfo {
   resetIn: number;
 }
 
+interface VeniceAPIError {
+  error: string;
+}
+
+interface VeniceAPIResponse {
+  choices?: Array<{
+    message?: {
+      content?: string;
+    };
+  }>;
+}
+
 const defaultRetryConfig: RetryConfig = {
   maxAttempts: 3,
   initialDelay: 1000,
@@ -40,6 +59,7 @@ const defaultRetryConfig: RetryConfig = {
 const defaultConfig: Partial<LLMConfig> = {
   baseUrl: 'https://api.venice.ai/api/v1',
   retry: defaultRetryConfig,
+  timeout: 120000, // 2 minute default timeout for deep research
 };
 
 export class LLMError extends Error {
@@ -98,7 +118,15 @@ export class LLMClient {
       );
     }
 
-    const model = config.model || process.env.VENICE_MODEL || 'llama-3.3-70b';
+    // Use provided model, environment variable, or suggest based on task params
+    let model = config.model || process.env.VENICE_MODEL;
+    if (!model && config.taskParams) {
+      model = suggestModel(config.taskParams);
+    }
+    if (!model) {
+      model = 'llama-3.3-70b'; // Default fallback if no model specified
+    }
+
     if (!isValidModel(model)) {
       throw new LLMError(
         'ConfigError',
@@ -106,12 +134,30 @@ export class LLMClient {
       );
     }
 
+    // For deep research models, use a longer timeout
+    let timeout = config.timeout || defaultConfig.timeout;
+    if (model === 'deepseek-r1-671b') {
+      timeout = 300000; // 5 minutes for our most powerful model
+    }
+
     this.config = {
       ...defaultConfig,
       ...config,
       apiKey,
       model,
+      timeout,
+      taskParams: config.taskParams || {},
     } as Required<LLMConfig>;
+
+    const modelSpec = VENICE_MODELS[model];
+    output.log('LLMClient initialized with config:', {
+      model: this.config.model,
+      baseUrl: this.config.baseUrl,
+      retry: this.config.retry,
+      timeout: this.config.timeout,
+      modelTraits: modelSpec.traits,
+      modelBestFor: modelSpec.bestFor,
+    });
   }
 
   private getRateLimitDelay(): number {
@@ -119,6 +165,21 @@ export class LLMClient {
       return this.rateLimitInfo.resetIn * 1000 + 100;
     }
     return this.config.retry.initialDelay;
+  }
+
+  private async fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      return response;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   }
 
   async complete(params: {
@@ -137,7 +198,31 @@ export class LLMClient {
 
     for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
       try {
-        const response = await fetch(
+        output.log(`Attempt ${attempt}/${retryConfig.maxAttempts}: Making request to Venice API`);
+        
+        const requestBody = {
+          model: this.config.model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: prompt },
+          ],
+          temperature,
+          max_tokens: Math.min(maxTokens, maxContextTokens),
+          top_p: 0.95,
+        };
+
+        // Log complete request details for troubleshooting
+        output.log('Request details:', {
+          url: `${this.config.baseUrl}/chat/completions`,
+          model: this.config.model,
+          temperature,
+          maxTokens: Math.min(maxTokens, maxContextTokens),
+          system,
+          prompt,
+          requestBody,
+        });
+
+        const response = await this.fetchWithTimeout(
           `${this.config.baseUrl}/chat/completions`,
           {
             method: 'POST',
@@ -145,33 +230,29 @@ export class LLMClient {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${this.config.apiKey}`,
             },
-            body: JSON.stringify({
-              model: this.config.model,
-              messages: [
-                { role: 'system', content: system },
-                { role: 'user', content: prompt },
-              ],
-              temperature,
-              max_tokens: Math.min(maxTokens, maxContextTokens),
-              top_p: 0.95,
-            }),
+            body: JSON.stringify(requestBody),
           },
         );
+
+        output.log('Received response:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+        });
 
         this.rateLimitInfo = getRateLimitInfo(response.headers);
 
         if (!response.ok) {
-          const error = await response
-            .json()
-            .catch(() => ({ error: response.statusText }));
+          const errorData = await response.json() as VeniceAPIError;
           throw new LLMError(
             'APIError',
-            `Venice API error: ${error.error || response.statusText}`,
-            { status: response.status, error },
+            `Venice API error: ${errorData.error || response.statusText}`,
+            { status: response.status, error: errorData },
           );
         }
 
-        const data = await response.json();
+        const data = await response.json() as VeniceAPIResponse;
+        output.log('Response data received:', data);
 
         if (!data.choices?.[0]?.message?.content) {
           throw new LLMError(
@@ -187,7 +268,16 @@ export class LLMClient {
           timestamp: new Date().toISOString(),
         };
       } catch (error: unknown) {
+        output.log(`Attempt ${attempt} failed:`, error);
         lastError = error;
+
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          throw new LLMError(
+            'TimeoutError',
+            `Request timed out after ${this.config.timeout}ms`,
+            error,
+          );
+        }
 
         if (!isRetryableError(error)) {
           throw error;
@@ -213,6 +303,7 @@ export class LLMClient {
           delay *= 2;
         }
 
+        output.log(`Waiting ${delay}ms before next attempt...`);
         await sleep(delay);
       }
     }

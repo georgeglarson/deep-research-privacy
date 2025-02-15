@@ -94,9 +94,28 @@ export class QueryProcessor extends BaseProcessor<QueryResult> {
   }
 }
 
+interface ContentAnalysis {
+  claims: Array<{
+    statement: string;
+    evidence: string[];
+    confidence: number;
+  }>;
+  methodologies: string[];
+  patterns: Array<{
+    type: 'consensus' | 'disagreement' | 'trend';
+    description: string;
+  }>;
+  relationships: Array<{
+    concept1: string;
+    concept2: string;
+    relationship: string;
+  }>;
+}
+
 export interface LearningResult extends ProcessedResult {
   learnings: string[];
   followUpQuestions: string[];
+  analysis?: ContentAnalysis;
 }
 
 export class LearningProcessor extends BaseProcessor<LearningResult> {
@@ -105,47 +124,117 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
       const lines = this.extractLines(content);
       const learnings: string[] = [];
       const questions: string[] = [];
+      let currentSection: 'learning' | 'question' | 'analysis' | null = null;
+      let analysisSection: keyof ContentAnalysis | null = null;
+      
+      const analysis: ContentAnalysis = {
+        claims: [],
+        methodologies: [],
+        patterns: [],
+        relationships: [],
+      };
 
-      let isLearningSection = false;
-      let isQuestionSection = false;
+      let currentClaim: {
+        statement: string;
+        evidence: string[];
+        confidence: number;
+      } | null = null;
 
       for (const line of lines) {
+        const lowerLine = line.toLowerCase();
+
+        // Determine section
         if (
-          line.toLowerCase().includes('key learning') ||
-          line.toLowerCase().includes('insight') ||
-          line.toLowerCase().includes('finding')
+          lowerLine.includes('key learning') ||
+          lowerLine.includes('insight') ||
+          lowerLine.includes('finding')
         ) {
-          isLearningSection = true;
-          isQuestionSection = false;
+          currentSection = 'learning';
+          continue;
+        } else if (
+          lowerLine.includes('follow-up') ||
+          lowerLine.includes('question')
+        ) {
+          currentSection = 'question';
+          continue;
+        } else if (lowerLine.includes('content analysis')) {
+          currentSection = 'analysis';
           continue;
         }
 
-        if (
-          line.toLowerCase().includes('follow-up') ||
-          line.toLowerCase().includes('question')
-        ) {
-          isLearningSection = false;
-          isQuestionSection = true;
-          continue;
-        }
-
-        if (line.includes('?')) {
-          questions.push(line);
-        } else if (line.length > 20) {
-          // Minimum length for meaningful content
-          learnings.push(line);
-        }
-      }
-
-      if (learnings.length === 0 && questions.length === 0) {
-        for (const line of lines) {
-          if (line.includes('?')) {
-            questions.push(line);
-          } else if (line.length > 20) {
-            learnings.push(line);
+        // Handle analysis subsections
+        if (currentSection === 'analysis') {
+          if (lowerLine.includes('key claims')) {
+            analysisSection = 'claims';
+            continue;
+          } else if (lowerLine.includes('methodologies')) {
+            analysisSection = 'methodologies';
+            continue;
+          } else if (lowerLine.includes('patterns')) {
+            analysisSection = 'patterns';
+            continue;
+          } else if (lowerLine.includes('relationships')) {
+            analysisSection = 'relationships';
+            continue;
           }
+
+          // Process analysis content
+          if (analysisSection === 'claims') {
+            const confidenceMatch = line.match(/confidence:\s*(0\.\d+)/i);
+            if (confidenceMatch && confidenceMatch[1]) {
+              if (currentClaim) {
+                currentClaim.confidence = parseFloat(confidenceMatch[1]);
+                analysis.claims.push(currentClaim);
+                currentClaim = null;
+              }
+            } else if (line.includes('Evidence:')) {
+              // Skip the Evidence header
+              continue;
+            } else if (currentClaim) {
+              currentClaim.evidence.push(line);
+            } else if (line.length > 20) {
+              currentClaim = {
+                statement: line,
+                evidence: [],
+                confidence: 0,
+              };
+            }
+          } else if (analysisSection === 'methodologies') {
+            if (line.length > 10) {
+              analysis.methodologies.push(line);
+            }
+          } else if (analysisSection === 'patterns') {
+            const typeMatch = line.match(/^(consensus|disagreement|trend):/i);
+            if (typeMatch?.[0] && typeMatch?.[1] && line.length > 20) {
+              analysis.patterns.push({
+                type: typeMatch[1].toLowerCase() as 'consensus' | 'disagreement' | 'trend',
+                description: line.substring(typeMatch[0].length).trim(),
+              });
+            }
+          } else if (analysisSection === 'relationships') {
+            const relationMatch = line.match(/(.+?)\s+(relates to|influences|affects|depends on|correlates with)\s+(.+)/i);
+            if (relationMatch?.[1] && relationMatch?.[2] && relationMatch?.[3]) {
+              analysis.relationships.push({
+                concept1: relationMatch[1].trim(),
+                relationship: relationMatch[2].trim(),
+                concept2: relationMatch[3].trim(),
+              });
+            }
+          }
+        } else if (currentSection === 'learning' && line.length > 20) {
+          learnings.push(line);
+        } else if (currentSection === 'question' && line.includes('?')) {
+          questions.push(line);
         }
       }
+
+      // Finalize any pending claim
+      if (currentClaim && currentClaim.statement) {
+        currentClaim.confidence = 0.5; // Default confidence if not specified
+        analysis.claims.push(currentClaim);
+      }
+
+      const hasAnalysis = Object.values(analysis).some(arr => arr.length > 0);
 
       if (learnings.length > 0 || questions.length > 0) {
         return {
@@ -153,6 +242,7 @@ export class LearningProcessor extends BaseProcessor<LearningResult> {
           success: true,
           learnings,
           followUpQuestions: questions,
+          ...(hasAnalysis ? { analysis } : {}),
         };
       }
 

@@ -22,7 +22,7 @@ In today's AI landscape, privacy often takes a backseat to functionality. This p
 - **Local Processing**: Keep sensitive data on your machine, not in the cloud
 - **Transparent Code**: 100% open source, audit everything yourself
 
-This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng), enhanced to prioritize user privacy and unrestricted research capabilities.
+This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng), enhanced to prioritize user privacy and unrestricted research capabilities. Our research strategies were inspired by [open-deep-research](https://github.com/btahir/open-deep-research) by [@btahir](https://github.com/btahir), though we've taken a different approach focused on privacy and local processing.
 
 ## Quick Demo 🎥
 
@@ -74,6 +74,8 @@ This project showcases:
 
 ## How We Compare 📊
 
+### Comparison with Traditional Tools
+
 | Feature | Deep Research Privacy | Traditional Research Tools | Other AI Assistants |
 |---------|---------------------|------------------------|-------------------|
 | Privacy First | ✅ No data collection | ❌ Tracks searches | ❌ Stores conversations |
@@ -82,6 +84,26 @@ This project showcases:
 | Local Processing | ✅ Your machine | ❌ Cloud-based | ❌ Cloud-based |
 | Cost | ✅ Pay per use | ❌ Expensive subscriptions | ❌ Monthly fees |
 
+### Comparison with OpenAI's Deep Research
+
+In the interest of transparency, here's how our implementation differs from OpenAI's deep research tool:
+
+| Feature | OpenAI Deep Research | Deep Research Privacy |
+|---------|---------------------|---------------------|
+| Model | OpenAI o3 (optimized for data analysis) | Venice.ai models (general purpose) |
+| Input Types | Text, images, PDFs, spreadsheets | Text only (web search results) |
+| Research Strategy | End-to-end reinforcement learning | Fixed breadth/depth tree structure |
+| Path Planning | Dynamic with backtracking | Static with predefined paths |
+| Output Format | Comprehensive reports with embedded data | Basic learnings and sources lists |
+| Integration | Built into ChatGPT | Standalone command-line tool |
+| Privacy Focus | Cloud-based processing | Local processing, privacy-first |
+
+While our tool may not match all of OpenAI's features, we prioritize:
+- Privacy and local processing
+- Transparent, open-source implementation
+- Uncensored research capabilities
+- User control over data and processing
+
 ## Share & Contribute 🌟
 
 Help make AI research more private:
@@ -89,7 +111,11 @@ Help make AI research more private:
 1. ⭐ Star this repository to show your support
 2. 🐦 Share on [Twitter](https://twitter.com/intent/tweet?text=Excited%20to%20discover%20Deep%20Research%20Privacy%20Edition!%20Privacy-first%20research%20using%20%40VeniceAI%20(venice.ai%2Fchat%3Fref%3DVB8W1j)%20%2B%20%40brave%20search.%20Fork%20of%20%40dzhng%27s%20work%2C%20now%20with%20uncensored%20models%20%26%20private%20search.%0A%0A%23AI%20%23Privacy%20%23OpenSource%20%23Research%0A&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
 3. 🔄 Follow [@g3ologic](https://twitter.com/g3ologic) for updates
-4. 🤝 Join our [contributors](CONTRIBUTING.md)
+4. 🤝 Join our [contributors](CONTRIBUTORS.md)
+
+## Contributors
+
+See our [Contributors List](CONTRIBUTORS.md) for all the amazing people who have helped make this project better!
 
 ## Getting Started
 

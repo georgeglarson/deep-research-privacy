@@ -74,40 +74,51 @@ class BraveSearchProvider implements SearchProvider {
     if (!apiKey) {
       throw new Error('BRAVE_API_KEY environment variable is required');
     }
+    output.log('Initializing Brave Search with API key:', apiKey.substring(0, 5) + '...');
     this.apiKey = apiKey;
     this.rateLimiter = new RateLimiter(5000); // 5 seconds between requests for free plan
   }
 
   private async makeRequest(query: string): Promise<SearchResult[]> {
-    output.log('Starting Brave search...');
+    output.log('Starting Brave search for query:', query);
+    output.log('Waiting for rate limiter...');
     await this.rateLimiter.waitForNextSlot();
+    output.log('Rate limiter cleared, making request...');
 
-    const response = await axios.get<BraveSearchResponse>(
-      `${this.baseUrl}/web/search`,
-      {
-        headers: {
-          Accept: 'application/json',
-          'X-Subscription-Token': this.apiKey,
+    try {
+      const response = await axios.get<BraveSearchResponse>(
+        `${this.baseUrl}/web/search`,
+        {
+          headers: {
+            Accept: 'application/json',
+            'X-Subscription-Token': this.apiKey,
+          },
+          params: {
+            q: query,
+            count: 10,
+            offset: 0,
+            language: 'en',
+            country: 'US',
+            safesearch: 'moderate',
+            format: 'json',
+          },
         },
-        params: {
-          q: query,
-          count: 10,
-          offset: 0,
-          language: 'en',
-          country: 'US',
-          safesearch: 'moderate',
-          format: 'json',
-        },
-      },
-    );
+      );
 
-    const results = response.data.web?.results || [];
-    return results.map((result: BraveSearchResult) => ({
-      title: result.title || 'Untitled',
-      content: result.description || 'No description available',
-      source: result.url,
-      type: this.type,
-    }));
+      output.log('Received response from Brave Search');
+      const results = response.data.web?.results || [];
+      output.log(`Found ${results.length} results`);
+
+      return results.map((result: BraveSearchResult) => ({
+        title: result.title || 'Untitled',
+        content: result.description || 'No description available',
+        source: result.url,
+        type: this.type,
+      }));
+    } catch (error) {
+      output.log('Error in makeRequest:', error);
+      throw error;
+    }
   }
 
   async search(query: string): Promise<SearchResult[]> {
@@ -115,11 +126,18 @@ class BraveSearchProvider implements SearchProvider {
 
     while (retryCount <= this.maxRetries) {
       try {
+        output.log(`Search attempt ${retryCount + 1}/${this.maxRetries + 1}`);
         return await this.makeRequest(query);
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           const status = error.response?.status;
           const errorResponse = error.response?.data as BraveErrorResponse;
+
+          output.log('Axios error:', {
+            status,
+            errorResponse,
+            message: error.message,
+          });
 
           if (status === 429) {
             output.log(
@@ -177,6 +195,7 @@ class BraveSearchProvider implements SearchProvider {
 export function suggestSearchProvider(options: {
   type: string;
 }): SearchProvider {
+  output.log('Suggesting search provider for type:', options.type);
   if (options.type !== 'web') {
     throw new Error('Only web search is supported');
   }

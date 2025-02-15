@@ -3,6 +3,7 @@ import {
   ResearchConfig,
   ResearchProgress,
   ResearchResult,
+  ContentAnalysis,
 } from '../deep-research.js';
 import { output } from '../output-manager.js';
 import {
@@ -25,6 +26,7 @@ interface PathNode {
     images?: string[];
     pdfs?: string[];
   };
+  analysis?: ContentAnalysis;
 }
 
 /**
@@ -36,6 +38,12 @@ export class DynamicResearchPath {
   private root: PathNode;
   private explorationQueue: PathNode[] = [];
   private maxExplorationNodes: number;
+  private globalAnalysis: ContentAnalysis = {
+    claims: [],
+    methodologies: [],
+    patterns: [],
+    relationships: [],
+  };
 
   constructor(config: ResearchConfig, progress: ResearchProgress) {
     this.config = config;
@@ -61,6 +69,8 @@ export class DynamicResearchPath {
       content,
       numFollowUpQuestions: Math.ceil(this.config.breadth / 2),
       model,
+      analysisDepth: this.config.analysis?.depth || 'basic',
+      focusAreas: this.config.analysis?.focusAreas,
     });
   }
 
@@ -70,11 +80,14 @@ export class DynamicResearchPath {
       query: `Rate the relevance of "${node.query}" to the original query "${this.config.query}" on a scale of 0-1`,
       content: node.content?.text ? [node.content.text] : [],
       model: 'deepseek-r1-671b' as VeniceModel,
+      analysisDepth: 'basic',
     });
     
-    // Extract score from AI response
-    const scoreMatch = results.learnings[0]?.match(/0\.\d+/);
-    return scoreMatch ? parseFloat(scoreMatch[0]) : 0.5;
+    // Extract score from AI response, default to 0.5 if not found
+    const firstLearning = results.learnings[0] || '';
+    const scoreMatch = firstLearning.match(/0\.\d+/);
+    const score = scoreMatch?.[0] ? parseFloat(scoreMatch[0]) : 0.5;
+    return score;
   }
 
   private async processMultimodalContent(content: string[]) {
@@ -83,6 +96,8 @@ export class DynamicResearchPath {
       query: this.config.query,
       content,
       model: 'qwen-2.5-vl' as VeniceModel,
+      analysisDepth: this.config.analysis?.depth || 'basic',
+      focusAreas: this.config.analysis?.focusAreas,
     });
     
     return results;
@@ -107,6 +122,87 @@ export class DynamicResearchPath {
       }
       throw error;
     }
+  }
+
+  private updateGlobalAnalysis(nodeAnalysis: ContentAnalysis) {
+    // Merge claims
+    this.globalAnalysis.claims.push(...nodeAnalysis.claims);
+
+    // Add unique methodologies
+    const methodSet = new Set([...this.globalAnalysis.methodologies, ...nodeAnalysis.methodologies]);
+    this.globalAnalysis.methodologies = Array.from(methodSet);
+
+    // Merge patterns
+    this.globalAnalysis.patterns.push(...nodeAnalysis.patterns);
+
+    // Merge relationships
+    this.globalAnalysis.relationships.push(...nodeAnalysis.relationships);
+
+    // Update progress
+    if (this.progress.analysis) {
+      this.progress.analysis.processedSources++;
+      this.progress.analysis.identifiedPatterns += nodeAnalysis.patterns.length;
+      this.progress.analysis.extractedClaims += nodeAnalysis.claims.length;
+    }
+  }
+
+  private generateQueriesFromAnalysis(node: PathNode): Promise<Array<{ query: string; researchGoal: string }>> {
+    // Use analysis to guide query generation
+    const knowledgeGaps = this.findKnowledgeGaps();
+    const timeframe = this.detectTimeframe();
+
+    return generateQueries({
+      query: node.query,
+      numQueries: Math.ceil(this.config.breadth / 2),
+      model: 'deepseek-r1-671b' as VeniceModel,
+      learnings: node.learnings,
+      queryTypes: ['comparative', 'methodological', 'consensus'],
+      context: {
+        previousFindings: node.learnings,
+        knowledgeGaps,
+        timeframe,
+      },
+    });
+  }
+
+  private findKnowledgeGaps(): string[] {
+    const gaps: string[] = [];
+    
+    // Look for patterns with low confidence
+    const lowConfidenceClaims = this.globalAnalysis.claims
+      .filter(claim => claim.confidence < 0.7)
+      .map(claim => claim.statement);
+    if (lowConfidenceClaims.length > 0) {
+      gaps.push(...lowConfidenceClaims);
+    }
+
+    // Look for disagreements in patterns
+    const disagreements = this.globalAnalysis.patterns
+      .filter(pattern => pattern.type === 'disagreement')
+      .map(pattern => pattern.description);
+    if (disagreements.length > 0) {
+      gaps.push(...disagreements);
+    }
+
+    return gaps;
+  }
+
+  private detectTimeframe(): string | undefined {
+    // Analyze patterns for temporal information
+    const temporalPatterns = this.globalAnalysis.patterns
+      .filter(pattern => pattern.description.match(/recent|latest|current|future|past|years?|months?/i));
+
+    if (temporalPatterns.length > 0) {
+      // Extract the most relevant timeframe
+      const timeframeMatch = temporalPatterns[0].description.match(
+        /(?:past|recent|last)\s+(\d+)\s+(?:years?|months?|decades?)/i
+      );
+      if (timeframeMatch?.[0]) {
+        return timeframeMatch[0];
+      }
+    }
+
+    return undefined;
   }
 
   private async exploreNode(node: PathNode): Promise<void> {
@@ -139,14 +235,15 @@ export class DynamicResearchPath {
       node.relevanceScore = await this.calculateRelevanceScore(node);
       node.explored = true;
 
+      // Update analysis if available
+      if (results.analysis) {
+        node.analysis = results.analysis;
+        this.updateGlobalAnalysis(results.analysis);
+      }
+
       // Generate and queue child nodes if relevance score is good
       if (node.relevanceScore > 0.6) {
-        const childQueries = await generateQueries({
-          query: node.query,
-          numQueries: Math.ceil(this.config.breadth / 2),
-          model: 'deepseek-r1-671b' as VeniceModel,
-          learnings: node.learnings, // Pass current learnings for better context
-        });
+        const childQueries = await this.generateQueriesFromAnalysis(node);
 
         node.children = childQueries.map(q => ({
           query: q.query,
@@ -210,6 +307,7 @@ export class DynamicResearchPath {
     return {
       learnings: [...new Set(allResults.learnings)],
       sources: [...new Set(allResults.sources)],
+      analysis: this.globalAnalysis,
       models: {
         pathPlanning: 'deepseek-r1-671b',
         multimodal: 'qwen-2.5-vl',
