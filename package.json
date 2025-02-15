@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "start": "tsx --env-file=.env src/run.ts",
+    "start": "tsx src/run.ts",
+    "start:host": "tsx --env-file=.env src/run.ts",
     "start:ui": "cd deep-research-ui && npm run start",
     "docker": "tsx src/run.ts",
     "test": "tsx --test tests/ai/text-splitter.test.ts tests/search/search.test.ts",

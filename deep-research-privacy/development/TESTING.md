@@ -32,64 +32,39 @@ docker-compose run deep-research npm run test:venice
 docker-compose run deep-research npm run test:queries
 ```
 
-## Docker Setup
-
-The project uses Docker for consistent testing environments:
-
-```dockerfile
-# Dockerfile
-FROM node:18-alpine
-WORKDIR /app
-
-# Copy package files first
-COPY package*.json ./
-COPY deep-research-ui/package*.json ./deep-research-ui/
-COPY deep-research-ui/package-lock.json ./deep-research-ui/
-
-# Install dependencies
-RUN npm install
-
-# Set up UI
-WORKDIR /app/deep-research-ui
-RUN npm install
-
-# Copy UI source files
-COPY deep-research-ui/tsconfig.json ./
-COPY deep-research-ui/src ./src
-RUN npm run build
-
-# Back to root and copy remaining files
-WORKDIR /app
-COPY . .
-
-# Test environment setup
-ENV CI=true
-ENV NODE_ENV=test
-ENV VENICE_API_KEY=dummy-key
-ENV BRAVE_API_KEY=dummy-key
-```
-
-## User Interface
+## Terminal UI
 
 ### Host Environment
 Run UI directly on your local machine:
 ```bash
-# Run the main application with terminal UI
-npm start
+# Run the main application with terminal UI (with .env file)
+npm run start:host
 
 # Run terminal UI in development mode
 npm run start:ui
 ```
 
 ### Docker Environment
-Run UI in a containerized environment:
+The terminal UI (built with blessed) requires proper TTY allocation when running in Docker:
+
 ```bash
 # Run the main application with terminal UI
 docker-compose run deep-research npm start
 
 # Run terminal UI in development mode
 docker-compose run deep-research npm run start:ui
+
+# If you have display issues, try setting a specific terminal type:
+TERM=xterm-256color docker-compose run deep-research npm start
 ```
+
+Note: The Docker configuration includes:
+- stdin_open: true (docker run -i)
+- tty: true (docker run -t)
+- TERM environment variable passthrough
+- Environment variables from .env.test
+
+These settings ensure proper terminal handling for the blessed-based UI.
 
 ### Upcoming Web Interface
 Web interface support is planned for future development:
@@ -119,7 +94,7 @@ Web interface support is planned for future development:
 ## Test Environment
 
 ### Host Environment
-- Uses `.env` for configuration
+- Uses `.env` for configuration (via start:host script)
 - Requires API keys to be set up
 - Uses local research directory
 - Can run in CI mode with `CI=true`
@@ -129,6 +104,7 @@ Web interface support is planned for future development:
 - Uses dummy API keys for testing
 - Isolated research directory
 - CI mode enabled by default
+- Terminal type passed through for UI
 
 ## Adding New Tests
 
