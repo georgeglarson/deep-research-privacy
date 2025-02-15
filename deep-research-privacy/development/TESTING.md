@@ -1,5 +1,37 @@
 # Testing Infrastructure
 
+## Running Tests
+
+### Host Environment
+Run tests directly on your local machine:
+```bash
+# Install dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run specific test suites
+npm run test:delay
+npm run test:search
+npm run test:venice
+npm run test:queries
+```
+
+### Docker Environment
+Run tests in a containerized environment:
+```bash
+# Build and run all tests
+docker-compose build
+docker-compose run deep-research npm test
+
+# Run specific test suites
+docker-compose run deep-research npm run test:delay
+docker-compose run deep-research npm run test:search
+docker-compose run deep-research npm run test:venice
+docker-compose run deep-research npm run test:queries
+```
+
 ## Docker Setup
 
 The project uses Docker for consistent testing environments:
@@ -37,24 +69,20 @@ ENV VENICE_API_KEY=dummy-key
 ENV BRAVE_API_KEY=dummy-key
 ```
 
-## Running Tests
-
-```bash
-# Build and run all tests
-docker-compose build
-docker-compose run deep-research npm test
-
-# Run specific test suites
-docker-compose run deep-research npm run test:delay
-docker-compose run deep-research npm run test:search
-docker-compose run deep-research npm run test:venice
-docker-compose run deep-research npm run test:queries
-```
-
 ## User Interface
 
-### Current Terminal UI
-The project currently uses a terminal-based UI (built with blessed):
+### Host Environment
+Run UI directly on your local machine:
+```bash
+# Run the main application with terminal UI
+npm start
+
+# Run terminal UI in development mode
+npm run start:ui
+```
+
+### Docker Environment
+Run UI in a containerized environment:
 ```bash
 # Run the main application with terminal UI
 docker-compose run deep-research npm start
@@ -68,6 +96,7 @@ Web interface support is planned for future development:
 - Will expose HTTP port for web access
 - Will provide browser-based interface
 - Will maintain terminal UI as alternative option
+- Will support both host and Docker environments
 
 ## Test Types
 
@@ -89,10 +118,17 @@ Web interface support is planned for future development:
 
 ## Test Environment
 
+### Host Environment
+- Uses `.env` for configuration
+- Requires API keys to be set up
+- Uses local research directory
+- Can run in CI mode with `CI=true`
+
+### Docker Environment
 - Uses `.env.test` for configuration
-- Dummy API keys for testing
+- Uses dummy API keys for testing
 - Isolated research directory
-- CI mode enabled
+- CI mode enabled by default
 
 ## Adding New Tests
 
@@ -100,4 +136,7 @@ Web interface support is planned for future development:
 2. Follow existing naming convention (*.test.ts)
 3. Use Node's test runner
 4. Add npm script if needed
-5. Update docker-compose.yml if new volumes needed
+5. Ensure test works in both environments:
+   - Test locally on host machine
+   - Test in Docker container
+6. Update docker-compose.yml if new volumes needed
