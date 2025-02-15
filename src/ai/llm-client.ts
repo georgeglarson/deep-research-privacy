@@ -1,5 +1,6 @@
 import { output } from '../output-manager.js';
 import { isValidModel, VENICE_MODELS, VeniceModel, suggestModel } from './models.js';
+import { readSecret } from '../utils/secrets.js';
 
 export interface LLMConfig {
   apiKey?: string;
@@ -109,14 +110,21 @@ export class LLMClient {
   private config: Required<LLMConfig>;
   private rateLimitInfo: RateLimitInfo | null = null;
 
-  constructor(config: LLMConfig = {}) {
-    const apiKey = config.apiKey || process.env.VENICE_API_KEY;
-    if (!apiKey) {
-      throw new LLMError(
-        'ConfigError',
-        'API key is required. Provide it in constructor or set VENICE_API_KEY environment variable.',
-      );
-    }
+  private constructor(config: Required<LLMConfig>) {
+    this.config = config;
+    const modelSpec = VENICE_MODELS[config.model];
+    output.log('LLMClient initialized with config:', {
+      model: this.config.model,
+      baseUrl: this.config.baseUrl,
+      retry: this.config.retry,
+      timeout: this.config.timeout,
+      modelTraits: modelSpec.traits,
+      modelBestFor: modelSpec.bestFor,
+    });
+  }
+
+  static async create(config: LLMConfig = {}): Promise<LLMClient> {
+    const apiKey = config.apiKey || await readSecret('VENICE_API_KEY');
 
     // Use provided model, environment variable, or suggest based on task params
     let model = config.model || process.env.VENICE_MODEL;
@@ -140,7 +148,7 @@ export class LLMClient {
       timeout = 300000; // 5 minutes for our most powerful model
     }
 
-    this.config = {
+    const fullConfig = {
       ...defaultConfig,
       ...config,
       apiKey,
@@ -149,15 +157,7 @@ export class LLMClient {
       taskParams: config.taskParams || {},
     } as Required<LLMConfig>;
 
-    const modelSpec = VENICE_MODELS[model];
-    output.log('LLMClient initialized with config:', {
-      model: this.config.model,
-      baseUrl: this.config.baseUrl,
-      retry: this.config.retry,
-      timeout: this.config.timeout,
-      modelTraits: modelSpec.traits,
-      modelBestFor: modelSpec.bestFor,
-    });
+    return new LLMClient(fullConfig);
   }
 
   private getRateLimitDelay(): number {

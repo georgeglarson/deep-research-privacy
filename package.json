@@ -14,8 +14,7 @@
     "test:delay": "tsx --env-file=.env tests/delay.ts",
     "test:search": "tsx --env-file=.env tests/search.ts",
     "test:venice": "tsx --env-file=.env tests/venice.ts",
-    "test:queries": "tsx --env-file=.env tests/queries.ts",
-    "postinstall": "cd deep-research-ui && npm install && npm run build"
+    "test:queries": "tsx --env-file=.env tests/queries.ts"
   },
   "author": "george.g.larson@gmail.com",
   "license": "ISC",

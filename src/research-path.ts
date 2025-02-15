@@ -104,8 +104,9 @@ export class ResearchPath {
         });
       }
 
+      const provider = await suggestSearchProvider({ type: 'web' });
       const results = await this.withTimeout(
-        suggestSearchProvider({ type: 'web' }).search(query),
+        provider.search(query),
         SEARCH_TIMEOUT,
         'Search operation'
       );

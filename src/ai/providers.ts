@@ -71,7 +71,7 @@ export async function generateOutput(params: {
 > {
   try {
     // Create a new client for each request with the appropriate model
-    const client = new LLMClient({
+    const client = await LLMClient.create({
       model: params.model,
       taskParams: {
         needsFunctionCalling: params.type === 'query',
@@ -104,7 +104,7 @@ export async function generateOutput(params: {
     }
 
     // Create a new client for retry with lower temperature
-    const retryClient = new LLMClient({
+    const retryClient = await LLMClient.create({
       model: params.model,
       taskParams: {
         needsFunctionCalling: params.type === 'query',

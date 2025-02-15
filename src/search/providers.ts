@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { output } from '../output-manager.js';
 import { RateLimiter } from '../utils.js';
+import { readSecret } from '../utils/secrets.js';
 
 /**
  * A search result from any provider
@@ -69,14 +70,15 @@ class BraveSearchProvider implements SearchProvider {
   private maxRetries = 3;
   private retryDelay = 2000;
 
-  constructor() {
-    const apiKey = process.env.BRAVE_API_KEY;
-    if (!apiKey) {
-      throw new Error('BRAVE_API_KEY environment variable is required');
-    }
-    output.log('Initializing Brave Search with API key:', apiKey.substring(0, 5) + '...');
+  private constructor(apiKey: string) {
     this.apiKey = apiKey;
     this.rateLimiter = new RateLimiter(5000); // 5 seconds between requests for free plan
+  }
+
+  static async create(): Promise<BraveSearchProvider> {
+    const apiKey = await readSecret('BRAVE_API_KEY');
+    output.log('Initializing Brave Search with API key:', apiKey.substring(0, 5) + '...');
+    return new BraveSearchProvider(apiKey);
   }
 
   private async makeRequest(query: string): Promise<SearchResult[]> {
@@ -192,12 +194,12 @@ class BraveSearchProvider implements SearchProvider {
   }
 }
 
-export function suggestSearchProvider(options: {
+export async function suggestSearchProvider(options: {
   type: string;
-}): SearchProvider {
+}): Promise<SearchProvider> {
   output.log('Suggesting search provider for type:', options.type);
   if (options.type !== 'web') {
     throw new Error('Only web search is supported');
   }
-  return new BraveSearchProvider();
+  return await BraveSearchProvider.create();
 }
