@@ -3,8 +3,12 @@ services:
     container_name: deep-research
     build: .
     env_file:
-      - .env
+      - .env.test
+    environment:
+      - NODE_ENV=test
+      - CI=true
     stdin_open: true  # docker run -i
     tty: true        # docker run -t
     volumes:
       - ./research:/app/research  # Mount research directory
+      - ./tests:/app/tests  # Mount tests directory for running tests

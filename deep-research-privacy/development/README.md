@@ -12,10 +12,9 @@ This directory contains technical documentation for developers working on Deep R
    - Privacy-focused search provider implementation
 
 2. **Frontend**
-   - Website architecture and components
-   - UI/UX design system
-   - Terminal interface implementation
-   - See [FRONTEND_PLAN.md](FRONTEND_PLAN.md)
+    - Website architecture and components
+    - UI/UX design system
+    - Terminal interface implementation
 
 ## Development Setup
 

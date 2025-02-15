@@ -2,11 +2,32 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm ci
+# Copy package files first
+COPY package.json.docker ./package.json
+COPY package-lock.json ./
+COPY deep-research-ui/package*.json ./deep-research-ui/
+COPY deep-research-ui/package-lock.json ./deep-research-ui/
 
-# Copy source code and configuration files
+# Install root dependencies
+RUN npm install
+
+# Set up UI
+WORKDIR /app/deep-research-ui
+
+# Install UI dependencies
+RUN npm install
+
+# Copy UI source files
+COPY deep-research-ui/tsconfig.json ./
+COPY deep-research-ui/src ./src
+
+# Build UI
+RUN npm run build
+
+# Back to root
+WORKDIR /app
+
+# Copy remaining source files
 COPY . .
 
 # Set up test environment
@@ -15,5 +36,5 @@ ENV NODE_ENV=test
 ENV VENICE_API_KEY=dummy-key
 ENV BRAVE_API_KEY=dummy-key
 
-# Default command (can be overridden by docker-compose)
+# Default command
 CMD ["npx", "tsx", "src/run.ts"]
