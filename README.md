@@ -133,42 +133,59 @@ First, you'll need to get API keys:
    - Go to [API Keys](https://api.search.brave.com/app/keys)
    - Generate a new API key
 
-Then configure your environment:
+Then set up your configuration:
 
 ```bash
-# Copy example config
+# Copy example files
 cp .env.example .env
+cp config.json.example config.json
 
-# Edit .env with your API keys
-VENICE_API_KEY=your_venice_api_key_here
-BRAVE_API_KEY=your_brave_search_api_key_here
+# Edit both files with your API keys:
+# 1. .env - For environment variables
+# 2. config.json - For application configuration
 ```
 
-Then choose your preferred way to run the project:
+Now you can run the project using either method:
 
 ### Option 1: Direct Node.js
-
-If you have Node.js installed:
-
-1. Install dependencies:
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Run it:
-```bash
-npm start  
+# Run with default settings
+npm start
+
+# Or run with custom query
+QUERY="your research question" npm start
 ```
 
 ### Option 2: Docker Container
-
-Don't want to install Node.js? Just use Docker:
-
 ```bash
-docker-compose up  
+# Build the container
+docker build -t deep-research .
+
+# Run interactively
+docker run -it deep-research
+
+# Or run with a specific query
+docker run -it -e QUERY="your research question" deep-research
+
+# Or run with a specific model
+docker run -it -e VENICE_MODEL=llama-3.2-3b deep-research
 ```
 
-That's it! The exact same code runs in an isolated container with all dependencies included. No Node.js installation needed!
+The Docker method is perfect for trying out the project without installing Node.js!
+
+Available models:
+- `llama-3.3-70b`: Latest general purpose model
+- `llama-3.2-3b`: Fast, efficient model
+- `dolphin-2.9.2-qwen2-72b`: Uncensored model
+- `llama-3.1-405b`: Most intelligent model
+- `qwen32b`: Code-optimized model
+- `deepseek-r1-llama-70b`: DeepSeek's distilled model
+- `deepseek-r1-671b`: DeepSeek's largest model
+
+That's it! Choose whichever method is easier for you - they both run the exact same code.
 
 ## Project Structure
 
