@@ -1,21 +1,17 @@
 {
   "name": "deep-research-privacy-edition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Deep Research: Privacy Edition - A privacy-focused research tool using Venice.ai's uncensored language models",
   "main": "index.ts",
   "type": "module",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "start": "tsx src/run.ts",
-    "start:host": "tsx --env-file=.env src/run.ts",
-    "start:ui": "cd deep-research-ui && npm run start",
-    "docker": "tsx src/run.ts",
     "test": "tsx --test tests/ai/text-splitter.test.ts tests/search/search.test.ts",
-    "test:delay": "tsx --env-file=.env tests/delay.ts",
-    "test:search": "tsx --env-file=.env tests/search.ts",
-    "test:venice": "tsx --env-file=.env tests/venice.ts",
-    "test:queries": "tsx --env-file=.env tests/queries.ts",
-    "postinstall": "cd deep-research-ui && npm install && npm run build"
+    "test:delay": "tsx tests/delay.ts",
+    "test:search": "tsx tests/search.ts",
+    "test:venice": "tsx tests/venice.ts",
+    "test:queries": "tsx tests/queries.ts"
   },
   "author": "george.g.larson@gmail.com",
   "license": "ISC",
@@ -28,8 +24,7 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "axios": "^1.6.7",
-    "deep-research-ui": "file:deep-research-ui"
+    "axios": "^1.6.7"
   },
   "engines": {
     "node": ">=18"
