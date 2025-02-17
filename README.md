@@ -136,6 +136,8 @@ npm start
 
 ### Option 2: Docker Container
 
+### EDIT: 2025-02-17. Docker container is a bit junked up. Doesn't work for most people. Rebuild forthcoming
+
 Don't want to install Node.js? Just use Docker:
 
 ```bash
