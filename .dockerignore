@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.*
+*.md
+tests/
+.vscode/
+deep-research-privacy/
+deep-research-ui/

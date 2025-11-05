@@ -1,0 +1,15 @@
+{
+  "api": {
+    "venice": {
+      "key": "your-venice-api-key-here",
+      "model": "deepseek-r1-671b"
+    },
+    "brave": {
+      "key": "your-brave-api-key-here"
+    }
+  },
+  "research": {
+    "defaultDepth": 2,
+    "defaultBreadth": 3
+  }
+}
