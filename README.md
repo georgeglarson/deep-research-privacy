@@ -386,15 +386,32 @@ This project serves as an example for new developers, demonstrating:
 
 ## Available Models
 
-Venice.ai models, each optimized for different tasks:
+Venice.ai provides a dynamic roster of models optimized for different tasks. Use `npm run models` to see the current list with capabilities and pricing.
 
-- `llama-3.3-70b`: Latest general purpose model (65k context, function calling)
-- `llama-3.2-3b`: Fast, efficient model (131k context)
-- `dolphin-2.9.2-qwen2-72b`: Uncensored model (32k context)
-- `llama-3.1-405b`: Most intelligent model (63k context)
-- `qwen32b`: Code-optimized model (131k context)
-- `deepseek-r1-llama-70b`: DeepSeek's distilled model (65k context)
-- `deepseek-r1-671b`: DeepSeek's largest model (131k context)
+**Current models include:**
+
+- **llama-3.3-70b** (Default): General purpose, function calling (131k context)
+- **llama-3.2-3b** (Fastest): Quick responses, low cost (131k context)
+- **qwen3-235b** (Venice Large): Code-optimized, response schema support (131k context)
+- **qwen3-4b** (Venice Small): Small, efficient, reasoning (32k context)
+- **mistral-31-24b** (Venice Medium): Vision support, multimodal (131k context)
+- **venice-uncensored**: Uncensored outputs, response schema (32k context)
+- **qwen3-next-80b**: Large context window (262k context!)
+- **qwen3-coder-480b**: Code-specialized, massive context (262k context!)
+- **hermes-3-llama-3.1-405b**: Most intelligent (131k context)
+- **zai-org-glm-4.6**: Alternative high-performance model (202k context)
+
+**All models support:**
+- ✅ Web search grounding
+- ✅ Response schema (except llama-3.3-70b and hermes-3)
+- ✅ Up to 262k context window
+
+**Check current models and pricing:**
+```bash
+npm run models
+```
+
+Models are fetched dynamically from the Venice API, so this list is always up-to-date.
 
 ## Contributing
 
