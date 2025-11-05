@@ -6,8 +6,8 @@
 
 #### 1. Basic Research Flow
 - [ ] Run basic research: `npm start "AI in healthcare" 3 2 brave`
-- [ ] Verify output files created in `output/` directory
-- [ ] Check report.md is generated
+- [ ] Verify output files created in `research/` directory
+- [ ] Check research-*.md is generated
 - [ ] Confirm sources are listed
 
 #### 2. Search Providers
@@ -176,8 +176,8 @@ npm start "climate change" 3 2 venice
 
 ### Successful Test Indicators:
 - ✅ No errors or exceptions
-- ✅ Output files created in `output/`
-- ✅ Report.md is coherent and well-formatted
+- ✅ Output files created in `research/`
+- ✅ Research report is coherent and well-formatted
 - ✅ Logs show parallel execution
 - ✅ Confidence scores present (structured mode)
 - ✅ Citations present (Venice search)

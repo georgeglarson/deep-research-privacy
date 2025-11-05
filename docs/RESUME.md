@@ -1,5 +1,5 @@
 **George Larson**\
-[george.g.larson@gmail.com](mailto\:george.g.larson@gmail.com) • 412-945-0101 • LinkedIn • Pittsburgh, PA
+[george.g.larson@pm.me](mailto\:george.g.larson@pm.me) • 412-945-0101 • [LinkedIn](https://www.linkedin.com/in/georgelarson/) • [georgelarson.me](https://georgelarson.me/) • Pittsburgh, PA
 
 ---
 

@@ -52,7 +52,7 @@ an individual is officially representing the community in public spaces.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-george.g.larson@gmail.com or via Twitter [@g3ologic](https://x.com/g3ologic).
+george.g.larson@pm.me or via Twitter [@g3ologic](https://x.com/g3ologic).
 
 All complaints will be reviewed and investigated promptly and fairly.
 

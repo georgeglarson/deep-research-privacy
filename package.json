@@ -1,7 +1,7 @@
 {
   "name": "deep-research-privacy-edition",
-  "version": "1.0.0",
-  "description": "Deep Research: Privacy Edition - A privacy-focused research tool using Venice.ai's uncensored language models",
+  "version": "1.1.1",
+  "description": "Privacy-first AI research tool powered by Venice.ai's 10+ uncensored language models and Brave's private search. Features structured outputs, confidence scoring, parallel execution, and automatic citations. No data collection, no content restrictions.",
   "main": "index.ts",
   "type": "module",
   "scripts": {
@@ -10,9 +10,13 @@
     "docker": "tsx src/run.ts",
     "models": "tsx src/list-models.ts",
     "test:venice-search": "tsx --env-file=.env src/test-venice-search.ts",
-    "test:structured": "tsx --env-file=.env src/test-structured-outputs.ts"
+    "test:structured": "tsx --env-file=.env src/test-structured-outputs.ts",
+    "docker:start": "tsx src/run.ts",
+    "docker:models": "tsx src/list-models.ts",
+    "docker:test:venice-search": "tsx src/test-venice-search.ts",
+    "docker:test:structured": "tsx src/test-structured-outputs.ts"
   },
-  "author": "george.g.larson@gmail.com",
+  "author": "george.g.larson@pm.me",
   "license": "ISC",
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",

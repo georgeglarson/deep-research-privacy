@@ -7,5 +7,6 @@ npm-debug.log
 *.md
 tests/
 .vscode/
-deep-research-privacy/
+research/
+reports/
 deep-research-ui/

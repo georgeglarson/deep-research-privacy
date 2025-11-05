@@ -3,24 +3,26 @@
 [![Venice.ai](https://img.shields.io/badge/Private%20%26%20Uncensored%20AI-Venice.ai-blue?style=for-the-badge)](https://venice.ai/chat?ref=VB8W1j)
 [![Brave Search](https://img.shields.io/badge/Search%20by-Brave-orange?style=for-the-badge&logo=brave)](https://search.brave.com)
 
-> A privacy-focused research tool powered by uncensored AI and private search
+> Privacy-first AI research tool powered by Venice.ai's uncensored language models and Brave's private search - no data collection, no content restrictions, 100% open source
 
 [![Try Demo](https://img.shields.io/badge/Try-Demo-green?style=for-the-badge)](https://georgeglarson.github.io/deep-research-privacy/)
 [![GitHub stars](https://img.shields.io/github/stars/georgeglarson/deep-research-privacy?style=social)](https://github.com/georgeglarson/deep-research-privacy)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)](https://twitter.com/intent/tweet?text=Excited%20to%20discover%20Deep%20Research%20Privacy%20Edition!%20Privacy-first%20research%20using%20%40VeniceAI%20(venice.ai%2Fchat%3Fref%3DVB8W1j)%20%2B%20%40brave%20search.%20Fork%20of%20%40dzhng%27s%20work%2C%20now%20with%20uncensored%20models%20%26%20private%20search.%0A%0A%23AI%20%23Privacy%20%23OpenSource%20%23Research%0A&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
 
 A privacy-focused research tool that combines:
-- **Venice.ai's Uncensored Language Models**: Access to powerful AI models without content restrictions
-- **Brave Search's Private Search API**: Privacy-respecting web search capabilities
+- **[Venice.ai](https://venice.ai/chat?ref=VB8W1j)'s Uncensored Language Models**: Access to 10+ powerful AI models without content restrictions, including Llama 3.3 70B, Qwen 3 235B, and Venice Uncensored
+- **Brave Search's Private Search API**: Privacy-respecting web search with no-logging policy
+- **Advanced Features**: Structured JSON outputs with confidence scores, parallel query execution (3.3x faster), and automatic citations
 
 ## Why This Matters 🔒
 
 In today's AI landscape, privacy often takes a backseat to functionality. This project proves it doesn't have to be that way:
 
 - **True Privacy**: Your research queries stay private with Brave Search's no-logging policy
-- **Uncensored Research**: Access Venice.ai's unrestricted models for genuine research freedom
+- **Uncensored AI**: Venice.ai provides unrestricted access to 10+ powerful language models including Llama 3.3 70B, Qwen 3 235B (code-optimized), and their exclusive Venice Uncensored model
 - **Local Processing**: Keep sensitive data on your machine, not in the cloud
 - **Transparent Code**: 100% open source, audit everything yourself
+- **Advanced Features**: JSON schema-based structured outputs, confidence scoring, parallel execution, and automatic citations
 
 This project is a privacy-focused fork of [deep-research](https://github.com/dzhng/deep-research) by [@dzhng](https://github.com/dzhng), enhanced to prioritize user privacy and unrestricted research capabilities.
 
@@ -28,10 +30,12 @@ This project is a privacy-focused fork of [deep-research](https://github.com/dzh
 
 Try the interactive demo at [georgeglarson.github.io/deep-research-privacy](https://georgeglarson.github.io/deep-research-privacy)
 
-Features you can try:
-- Research privacy topics with uncensored AI
-- Compare different AI models
-- Experience our privacy-first approach
+**Experience Venice.ai's power:**
+- Research any topic with 10+ uncensored AI models
+- Compare model capabilities and pricing in real-time
+- See structured outputs with confidence scores
+- Test Venice.ai's web search integration with automatic citations
+- Experience true privacy - no data collection, no content restrictions
 
 ## The Coolest Part? Run It Your Way! 🚀
 
@@ -55,10 +59,12 @@ This project showcases:
 ## Features
 
 ### Privacy Focus
-- Uses Venice.ai's uncensored models
-- Dual search options: Brave Search (privacy-focused) or Venice Search (AI-grounded)
-- No query logging
-- Local result caching only
+- **Venice.ai Integration**: Access to 10+ uncensored AI models with up to 262k context windows
+- **Dual Search Options**:
+  - Brave Search (privacy-focused, no-logging policy)
+  - Venice Search (AI-grounded with automatic citations)
+- **Zero Data Collection**: No query logging, no conversation storage
+- **Local Processing**: All sensitive data stays on your machine
 
 ### Advanced Search Capabilities
 - **Dual Search Providers**:
@@ -69,16 +75,17 @@ This project showcases:
 - **True Parallelization**: 3.3x faster research with concurrent query execution
 - Meaningful filename generation
 
-### AI Integration
-- **Dynamic Model Discovery**: Auto-fetches latest Venice models with capabilities
+### AI Integration Powered by Venice.ai
+- **10+ Uncensored Models**: Access to Llama 3.3 70B, Qwen 3 235B, Venice Uncensored, and more
+- **Dynamic Model Discovery**: Auto-fetches latest Venice.ai models with real-time capabilities
+- **Massive Context Windows**: Up to 262k tokens (Qwen 3 Next 80B, Qwen 3 Coder 480B)
 - **Structured Outputs**: JSON schema-based responses with confidence scores (0-1)
-- **Smart Model Selection**: Automatic trait-based model selection
-- **Web Search Integration**: Built-in web search grounding with citations
-- **Priority Levels**: High/medium/low priority tagging for questions
-- **Confidence Scoring**: Every insight rated for reliability
-- Automatic rate limit handling
-- Robust error recovery with exponential backoff
-- Detailed progress tracking
+- **Smart Model Selection**: Automatic trait-based selection (fastest, most_uncensored, default_code, etc.)
+- **Web Search Integration**: Built-in Venice.ai web search grounding with automatic citations
+- **Priority Levels**: High/medium/low priority tagging for follow-up questions
+- **Confidence Scoring**: Every insight rated for reliability (0-1 scale)
+- **Automatic Rate Limit Handling**: Exponential backoff and retry logic
+- **Detailed Progress Tracking**: Real-time console updates with spinner
 
 ### Performance
 - **3.3x Faster**: True parallel query execution (breadth=3)
@@ -97,22 +104,24 @@ This project showcases:
 
 ## Share & Contribute 🌟
 
-Help make AI research more private:
+Help promote privacy-first AI research and Venice.ai:
 
-1. ⭐ Star this repository to show your support
-2. 🐦 Share on [Twitter](https://twitter.com/intent/tweet?text=Excited%20to%20discover%20Deep%20Research%20Privacy%20Edition!%20Privacy-first%20research%20using%20%40VeniceAI%20(venice.ai%2Fchat%3Fref%3DVB8W1j)%20%2B%20%40brave%20search.%20Fork%20of%20%40dzhng%27s%20work%2C%20now%20with%20uncensored%20models%20%26%20private%20search.%0A%0A%23AI%20%23Privacy%20%23OpenSource%20%23Research%0A&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
+1. ⭐ Star this repository to support the project
+2. 🐦 Share on [Twitter](https://twitter.com/intent/tweet?text=Discovered%20Deep%20Research%20Privacy%20Edition!%20%F0%9F%94%92%0A%0APowered%20by%20%40VeniceAI%27s%2010%2B%20uncensored%20models%20%2B%20%40brave%20private%20search%0A%0A%E2%9C%85%20No%20data%20collection%0A%E2%9C%85%20No%20content%20restrictions%0A%E2%9C%85%20262k%20context%20windows%0A%E2%9C%85%203.3x%20faster%20parallel%20execution%0A%0ATry%20Venice.ai%3A%20venice.ai%2Fchat%3Fref%3DVB8W1j%0A%0A%23VeniceAI%20%23Privacy%20%23OpenSource%20%23AI%20%23Research%0A&url=https%3A%2F%2Fgithub.com%2Fgeorgeglarson%2Fdeep-research-privacy)
 3. 🔄 Follow [@g3ologic](https://twitter.com/g3ologic) for updates
 4. 🤝 Join our [contributors](CONTRIBUTING.md)
+5. 🌐 Try [Venice.ai](https://venice.ai/chat?ref=VB8W1j) - Private & Uncensored AI
 
 ## Getting Started
 
 First, you'll need to get API keys:
 
-1. **Venice.ai API Key**
-   - Go to [Venice.ai](https://venice.ai/chat?ref=VB8W1j)
-   - Sign up for an account
+1. **Venice.ai API Key** (Required)
+   - Visit [Venice.ai](https://venice.ai/chat?ref=VB8W1j) - Private & Uncensored AI
+   - Sign up for a free account (no credit card required)
    - Navigate to your API settings
    - Generate a new API key
+   - Get access to 10+ uncensored models including Llama 3.3 70B, Qwen 3 235B, and Venice Uncensored
 
 2. **Brave Search API Key** *(optional - only needed for Brave search mode)*
    - Visit [Brave Search API](https://api.search.brave.com/app)
@@ -285,14 +294,11 @@ VENICE_MODEL=llama-3.3-70b               # Override default model
 
 ### Output Files
 
-Research results are saved in the `output/` directory:
+Research results are saved in the `research/` directory:
 
 ```
-output/
-├── your-research-query-YYYY-MM-DD-HH-MM-SS/
-│   ├── report.md              # Final research report
-│   ├── learnings.json         # Extracted insights (if structured mode)
-│   └── sources.json           # Source URLs
+research/
+├── research-your-query-YYYY-MM-DD-HH-MM-SS.md  # Complete research report
 ```
 
 ### Detailed Documentation
@@ -305,15 +311,20 @@ For in-depth guides, see:
 
 ### Option 2: Docker Container
 
-### EDIT: 2025-02-17. Docker container only works for some people. Rebuild forthcoming
-
 Don't want to install Node.js? Just use Docker:
 
 ```bash
-docker-compose up  
+# Build and run with docker-compose
+docker-compose up
+
+# Or run directly with docker
+docker build -t deep-research .
+docker run --rm --env-file .env -v $(pwd)/research:/app/research deep-research npm run docker:start "your query" 3 2
 ```
 
 That's it! The exact same code runs in an isolated container with all dependencies included. No Node.js installation needed!
+
+**Note:** Uses Node.js 20 for `--env-file` support. Docker-specific npm scripts available: `docker:start`, `docker:models`, `docker:test:structured`, `docker:test:venice-search`.
 
 ## Project Structure
 
@@ -384,34 +395,45 @@ This project serves as an example for new developers, demonstrating:
    - Debugging helpers
    - Example implementations
 
-## Available Models
+## Available Venice.ai Models
 
-Venice.ai provides a dynamic roster of models optimized for different tasks. Use `npm run models` to see the current list with capabilities and pricing.
+Venice.ai provides a dynamic roster of 10+ uncensored AI models optimized for different tasks. Use `npm run models` to see the current list with real-time capabilities and pricing.
 
-**Current models include:**
+### Featured Models
 
-- **llama-3.3-70b** (Default): General purpose, function calling (131k context)
-- **llama-3.2-3b** (Fastest): Quick responses, low cost (131k context)
-- **qwen3-235b** (Venice Large): Code-optimized, response schema support (131k context)
-- **qwen3-4b** (Venice Small): Small, efficient, reasoning (32k context)
-- **mistral-31-24b** (Venice Medium): Vision support, multimodal (131k context)
-- **venice-uncensored**: Uncensored outputs, response schema (32k context)
-- **qwen3-next-80b**: Large context window (262k context!)
-- **qwen3-coder-480b**: Code-specialized, massive context (262k context!)
-- **hermes-3-llama-3.1-405b**: Most intelligent (131k context)
-- **zai-org-glm-4.6**: Alternative high-performance model (202k context)
+**🚀 Production Models:**
+- **llama-3.3-70b** (Default): General purpose, function calling, 131k context - $0.70/M input
+- **qwen3-235b** (Venice Large): Code-optimized, response schema, 131k context - $0.90/M input
+- **mistral-31-24b** (Venice Medium): Vision support, multimodal, 131k context - $0.50/M input
 
-**All models support:**
-- ✅ Web search grounding
-- ✅ Response schema (except llama-3.3-70b and hermes-3)
-- ✅ Up to 262k context window
+**⚡ Speed & Efficiency:**
+- **llama-3.2-3b** (Fastest): Quick responses, low cost, 131k context - $0.15/M input
+- **qwen3-4b** (Venice Small): Efficient reasoning, 32k context - $0.05/M input
+
+**🔓 Uncensored & Specialized:**
+- **venice-uncensored**: Unrestricted outputs, response schema, 32k context - $0.20/M input
+- **qwen3-coder-480b**: Code-specialized, massive 262k context - $0.75/M input
+- **qwen3-next-80b**: Large 262k context window - $0.35/M input
+
+**🧠 Advanced Models:**
+- **hermes-3-llama-3.1-405b**: Most intelligent, 131k context - $1.10/M input
+- **zai-org-glm-4.6**: High-performance alternative, 202k context - $0.85/M input
+
+### Model Capabilities
+
+**All Venice.ai models support:**
+- ✅ Web search grounding with automatic citations
+- ✅ Response schema (9 out of 10 models)
+- ✅ Function calling (8 out of 10 models)
+- ✅ Context windows from 32k to 262k tokens
+- ✅ Uncensored outputs without content restrictions
 
 **Check current models and pricing:**
 ```bash
 npm run models
 ```
 
-Models are fetched dynamically from the Venice API, so this list is always up-to-date.
+Models are fetched dynamically from the Venice.ai API, ensuring you always have access to the latest capabilities.
 
 ## Contributing
 
@@ -424,10 +446,11 @@ Models are fetched dynamically from the Venice API, so this list is always up-to
 
 Let's make privacy-first AI research the standard:
 
-- 📧 Questions? Email [george.g.larson@gmail.com](mailto:george.g.larson@gmail.com)
+- 📧 Questions? Email [george.g.larson@pm.me](mailto:george.g.larson@pm.me)
 - 🐦 Follow [@g3ologic](https://x.com/g3ologic) for project updates
 - 💼 Connect on [LinkedIn](https://www.linkedin.com/in/georgelarson/)
-- 🌟 Star and watch this repo for updates
+- 🌐 Visit my [personal site](https://georgelarson.me/)
+- � Star and watch this repo for updates
 - 🔔 Report issues or suggest features in [GitHub Issues](https://github.com/georgeglarson/deep-research-privacy/issues)
 
 ## License

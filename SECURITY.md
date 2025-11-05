@@ -12,7 +12,7 @@ We take the security of Deep Research: Privacy Edition seriously. If you believe
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to george.g.larson@gmail.com.
+Instead, please report them via email to george.g.larson@pm.me.
 
 You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 

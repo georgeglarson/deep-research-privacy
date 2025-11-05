@@ -2,7 +2,7 @@
   "api": {
     "venice": {
       "key": "your-venice-api-key-here",
-      "model": "deepseek-r1-671b"
+      "model": "llama-3.3-70b"
     },
     "brave": {
       "key": "your-brave-api-key-here"
