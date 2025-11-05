@@ -1,20 +1,17 @@
-/**
- * Generic rate limiter for API requests
- */
 export class RateLimiter {
   private lastRequestTime: number = 0;
-  private readonly minDelay: number;
+  private minInterval: number;
 
-  constructor(delayMs: number) {
-    this.minDelay = delayMs;
+  constructor(minInterval: number = 1000) {
+    this.minInterval = minInterval;
   }
 
   async waitForNextSlot(): Promise<void> {
     const now = Date.now();
     const timeSinceLastRequest = now - this.lastRequestTime;
-    const waitTime = Math.max(0, this.minDelay - timeSinceLastRequest);
 
-    if (waitTime > 0) {
+    if (timeSinceLastRequest < this.minInterval) {
+      const waitTime = this.minInterval - timeSinceLastRequest;
       await new Promise(resolve => setTimeout(resolve, waitTime));
     }
 
@@ -22,26 +19,46 @@ export class RateLimiter {
   }
 }
 
-/**
- * Removes common prefixes and question marks to focus on key terms
- */
 export function cleanQuery(query: string): string {
-  return query
-    .replace(/^(what are |tell me about |explain |describe )/i, '')
-    .replace(/\?+$/, '')
-    .trim();
+  return query.replace(/\?+$/, '').trim();
 }
 
-/**
- * Ensures a directory exists, creating it if necessary
- */
-export async function ensureDir(
-  fs: typeof import('fs/promises'),
-  path: string,
-): Promise<void> {
+export function slugify(text: string, maxLength = 50): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, maxLength);
+}
+
+export async function ensureDir(fs: any, dirPath: string): Promise<void> {
   try {
-    await fs.access(path);
+    await fs.access(dirPath);
   } catch {
-    await fs.mkdir(path, { recursive: true });
+    await fs.mkdir(dirPath, { recursive: true });
   }
+}
+
+export async function batchPromises<T>(
+  tasks: (() => Promise<T>)[],
+  concurrency: number,
+): Promise<T[]> {
+  const results: T[] = [];
+  const executing: Promise<void>[] = [];
+
+  for (const task of tasks) {
+    const promise = task().then(result => {
+      results.push(result);
+      executing.splice(executing.indexOf(promise), 1);
+    });
+
+    executing.push(promise);
+
+    if (executing.length >= concurrency) {
+      await Promise.race(executing);
+    }
+  }
+
+  await Promise.all(executing);
+  return results;
 }

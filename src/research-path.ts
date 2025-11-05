@@ -10,7 +10,7 @@ import {
   SearchResult,
   suggestSearchProvider,
 } from './search/providers.js';
-import { cleanQuery } from './utils.js';
+import { batchPromises, cleanQuery } from './utils.js';
 
 /**
  * Handles a single research path, managing its progress and results
@@ -162,17 +162,31 @@ export class ResearchPath {
       currentQuery: queries[0]?.query,
     });
 
-    // Process queries sequentially with delay to avoid rate limits
-    const results = [];
-    for (const serpQuery of queries) {
-      const result = await this.processQuery(serpQuery.query, depth, breadth);
-      results.push(result);
+    output.log(
+      `Executing ${queries.length} queries in parallel (breadth: ${breadth})`,
+    );
 
-      // Add delay between queries to respect rate limits
-      if (queries.indexOf(serpQuery) < queries.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-      }
-    }
+    // Use controlled concurrency to avoid overwhelming APIs
+    // Max 3 concurrent requests to balance speed vs API limits
+    const MAX_CONCURRENT = 3;
+    const tasks = queries.map((serpQuery, index) => async () => {
+      this.updateProgress({
+        currentQuery: serpQuery.query,
+      });
+
+      output.log(
+        `[${index + 1}/${queries.length}] Processing: ${serpQuery.query}`,
+      );
+
+      return this.processQuery(serpQuery.query, depth, breadth);
+    });
+
+    const results = await batchPromises(
+      tasks,
+      Math.min(breadth, MAX_CONCURRENT),
+    );
+
+    output.log(`Completed ${results.length} parallel queries`);
 
     // Combine and deduplicate results
     return {
