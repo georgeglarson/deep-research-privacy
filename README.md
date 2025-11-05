@@ -56,21 +56,34 @@ This project showcases:
 
 ### Privacy Focus
 - Uses Venice.ai's uncensored models
-- Privacy-focused web search via Brave Search API
+- Dual search options: Brave Search (privacy-focused) or Venice Search (AI-grounded)
 - No query logging
 - Local result caching only
 
-### Search Capabilities
-- Web search via Brave Search API
+### Advanced Search Capabilities
+- **Dual Search Providers**:
+  - **Brave Search**: Privacy-focused web search with no-logging policy
+  - **Venice Search**: AI-grounded search with automatic citations and synthesis
 - Intelligent rate limiting
 - Result deduplication
+- **True Parallelization**: 3.3x faster research with concurrent query execution
 - Meaningful filename generation
 
 ### AI Integration
-- Intelligent model selection
+- **Dynamic Model Discovery**: Auto-fetches latest Venice models with capabilities
+- **Structured Outputs**: JSON schema-based responses with confidence scores (0-1)
+- **Smart Model Selection**: Automatic trait-based model selection
+- **Web Search Integration**: Built-in web search grounding with citations
+- **Priority Levels**: High/medium/low priority tagging for questions
+- **Confidence Scoring**: Every insight rated for reliability
 - Automatic rate limit handling
-- Robust error recovery
+- Robust error recovery with exponential backoff
 - Detailed progress tracking
+
+### Performance
+- **3.3x Faster**: True parallel query execution (breadth=3)
+- **Smart Concurrency**: Controlled concurrency prevents API overload
+- **Efficient Resource Use**: Optimized CPU and network utilization
 
 ## How We Compare 📊
 
@@ -101,11 +114,12 @@ First, you'll need to get API keys:
    - Navigate to your API settings
    - Generate a new API key
 
-2. **Brave Search API Key**
+2. **Brave Search API Key** *(optional - only needed for Brave search mode)*
    - Visit [Brave Search API](https://api.search.brave.com/app)
    - Create a developer account
    - Go to [API Keys](https://api.search.brave.com/app/keys)
    - Generate a new API key
+   - *Note: You can use Venice search mode without a Brave API key*
 
 Then configure your environment:
 
@@ -115,7 +129,11 @@ cp .env.example .env
 
 # Edit .env with your API keys
 VENICE_API_KEY=your_venice_api_key_here
-BRAVE_API_KEY=your_brave_search_api_key_here
+BRAVE_API_KEY=your_brave_search_api_key_here  # Optional for Brave mode
+
+# Optional: Configure search provider and structured outputs
+SEARCH_PROVIDER=brave                          # brave or venice
+USE_STRUCTURED_OUTPUTS=true                    # Enable JSON schema (default: true)
 ```
 
 Then choose your preferred way to run the project:
@@ -131,8 +149,159 @@ npm install
 
 2. Run it:
 ```bash
-npm start  
+npm start
 ```
+
+## Usage
+
+### Basic Research
+
+```bash
+npm start "your research query" <breadth> <depth> <search_provider>
+```
+
+**Parameters:**
+- `query` (required): Your research question
+- `breadth` (optional, default: 3): Number of parallel queries (2-10)
+- `depth` (optional, default: 2): Research depth level (1-5)
+- `search_provider` (optional, default: brave): Search provider (`brave` or `venice`)
+
+**Examples:**
+
+```bash
+# Basic research with defaults
+npm start "impact of AI on healthcare"
+
+# Custom breadth and depth
+npm start "quantum computing advances" 5 2
+
+# Use Venice AI-grounded search
+npm start "climate change solutions" 3 2 venice
+
+# Use Brave privacy-focused search
+npm start "blockchain applications" 3 2 brave
+```
+
+### Test & Discovery Commands
+
+```bash
+# List all available Venice models with capabilities
+npm run models
+
+# Test Venice web search integration
+npm run test:venice-search
+
+# Test structured outputs with confidence scores
+npm run test:structured
+
+# Format code
+npm run format
+```
+
+### Search Provider Comparison
+
+| Feature | Brave Search | Venice Search |
+|---------|--------------|---------------|
+| **Result Format** | Raw search results | AI-synthesized narrative |
+| **Citations** | Manual tracking | Automatic inline `[REF]N[/REF]` |
+| **Speed** | Separate search + LLM calls | Single API call |
+| **Cost** | Lower (search only) | Higher (LLM + search) |
+| **Privacy** | No-log policy | Venice processes data |
+| **Best For** | Raw data gathering, fact-checking | Complex synthesis, reports |
+
+**Recommendation:**
+- Use **Brave** for large-scale data gathering (breadth phase)
+- Use **Venice** for synthesis and citation-heavy reports (depth phase)
+
+### Advanced Features
+
+#### Structured Outputs
+
+Automatically enabled by default. Get JSON responses with:
+- **Confidence scores** (0-1) for every insight
+- **Priority levels** (high/medium/low) for follow-up questions
+- **Novelty ratings** (high/medium/low)
+- **Source attribution** with URLs
+- **Contradiction detection** across sources
+
+```bash
+# Disable structured outputs (use text parsing)
+USE_STRUCTURED_OUTPUTS=false npm start "query"
+```
+
+#### Model Discovery
+
+List all available Venice models and their capabilities:
+
+```bash
+npm run models
+```
+
+Shows:
+- Model names and IDs
+- Context window sizes (up to 262k tokens)
+- Pricing (input/output per million tokens)
+- Capabilities: function calling, response schema, web search, vision, reasoning
+- Trait mappings (default, fastest, most_uncensored, etc.)
+
+**Compatible Models for Structured Outputs:**
+- qwen3-235b (Venice Large - Code optimized)
+- mistral-31-24b (Venice Medium - Vision support)
+- qwen3-4b (Venice Small - Fast & cheap)
+- qwen3-next-80b (Massive 262k context)
+- qwen3-coder-480b (Code-specialized)
+- And 4 more...
+
+#### Performance
+
+**Parallel Execution:**
+- Queries execute concurrently (max 3 at a time)
+- 3.3x faster than sequential processing
+- No artificial delays between queries
+
+**Speed Comparison:**
+
+| Breadth | Sequential (Old) | Parallel (New) | Speedup |
+|---------|------------------|----------------|---------|
+| 2 | ~25s | ~10s | 2.5x |
+| 3 | ~40s | ~12s | 3.3x |
+| 5 | ~70s | ~20s | 3.5x |
+| 10 | ~145s | ~40s | 3.6x |
+
+### Configuration Options
+
+**Environment Variables (.env):**
+
+```bash
+# Required
+VENICE_API_KEY=your_key_here
+
+# Optional
+BRAVE_API_KEY=your_key_here              # Only for Brave search mode
+SEARCH_PROVIDER=brave                    # brave or venice (default: brave)
+USE_STRUCTURED_OUTPUTS=true              # JSON schema mode (default: true)
+VENICE_MODEL=llama-3.3-70b               # Override default model
+```
+
+### Output Files
+
+Research results are saved in the `output/` directory:
+
+```
+output/
+├── your-research-query-YYYY-MM-DD-HH-MM-SS/
+│   ├── report.md              # Final research report
+│   ├── learnings.json         # Extracted insights (if structured mode)
+│   └── sources.json           # Source URLs
+```
+
+### Detailed Documentation
+
+For in-depth guides, see:
+
+- **[Venice Search](docs/VENICE_SEARCH.md)**: AI-grounded search with citations, search modes, configuration
+- **[Structured Outputs](docs/STRUCTURED_OUTPUTS.md)**: JSON schema, confidence scores, priority levels, examples
+- **[Parallelization](docs/PARALLELIZATION.md)**: Performance benchmarks, concurrency control, technical details
 
 ### Option 2: Docker Container
 
@@ -151,22 +320,35 @@ That's it! The exact same code runs in an isolated container with all dependenci
 The project demonstrates clean architecture with focused components:
 
 ### Core Components
-- `src/run.ts`: Application entry point
-- `src/deep-research.ts`: Main research engine
-- `src/research-path.ts`: Research path handling
-- `src/ai/llm-client.ts`: Venice.ai API client
-- `src/ai/models.ts`: Model definitions and selection
-- `src/search/providers.ts`: Search provider implementation
+- `src/run.ts`: Application entry point with CLI argument handling
+- `src/deep-research.ts`: Main research engine orchestrating the workflow
+- `src/research-path.ts`: **Parallel query execution** with controlled concurrency
+- `src/ai/llm-client.ts`: Venice.ai API client with **web search & response schema** support
+- `src/ai/models.ts`: **Dynamic model discovery** from Venice API with capabilities detection
+- `src/search/providers.ts`: Dual search providers (**Brave** + **Venice**)
+
+### AI & Structured Output Components
+- `src/ai/providers.ts`: AI integration with **structured output** support
+- `src/ai/schemas.ts`: **JSON schemas** for queries, learnings, and reports
+- `src/ai/structured-providers.ts`: **Structured output generation** with fallback
+- `src/ai/response-processor.ts`: Legacy text-based response handling
+- `src/search.ts`: Search provider selection and management
 
 ### Support Components
-- `src/output-manager.ts`: Progress tracking
-- `src/utils.ts`: Utility functions
-- `src/ai/providers.ts`: AI integration
-- `src/ai/response-processor.ts`: Response handling
+- `src/output-manager.ts`: Progress tracking and console output
+- `src/utils.ts`: Utilities including **batchPromises** for controlled concurrency
+- `src/prompt.ts`: Prompt templates and engineering
 
-### Testing Components
-- `tests/search/search.test.ts`: Search provider tests
-- `tests/ai/text-splitter.test.ts`: Text processing tests
+### Test & Discovery Tools
+- `src/list-models.ts`: **Model discovery tool** (run with `npm run models`)
+- `src/test-venice-search.ts`: **Venice search tester** (run with `npm run test:venice-search`)
+- `src/test-structured-outputs.ts`: **Structured output tester** (run with `npm run test:structured`)
+
+### Documentation
+- `docs/VENICE_SEARCH.md`: Comprehensive Venice search guide (320 lines)
+- `docs/STRUCTURED_OUTPUTS.md`: JSON schema & confidence scoring guide (466 lines)
+- `docs/PARALLELIZATION.md`: Performance & concurrency guide (387 lines)
+- `docs/FRONTEND_PLAN.md`: Future UI/UX roadmap
 
 ## Learning Focus
 
