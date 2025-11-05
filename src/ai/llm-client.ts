@@ -1,9 +1,9 @@
 import { output } from '../output-manager.js';
-import { isValidModel, VENICE_MODELS, VeniceModel } from './models.js';
+import { getModelSpec, isValidModel } from './models.js';
 
 export interface LLMConfig {
   apiKey?: string;
-  model?: VeniceModel;
+  model?: string;
   baseUrl?: string;
   retry?: RetryConfig;
 }
@@ -16,7 +16,7 @@ export interface RetryConfig {
 
 export interface LLMResponse {
   content: string;
-  model: VeniceModel;
+  model: string;
   timestamp: string;
 }
 
@@ -88,6 +88,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export class LLMClient {
   private config: Required<LLMConfig>;
   private rateLimitInfo: RateLimitInfo | null = null;
+  private modelValidated: boolean = false;
 
   constructor(config: LLMConfig = {}) {
     const apiKey = config.apiKey || process.env.VENICE_API_KEY;
@@ -99,12 +100,6 @@ export class LLMClient {
     }
 
     const model = config.model || process.env.VENICE_MODEL || 'llama-3.3-70b';
-    if (!isValidModel(model)) {
-      throw new LLMError(
-        'ConfigError',
-        `Invalid model: ${model}. Available models: ${Object.keys(VENICE_MODELS).join(', ')}`,
-      );
-    }
 
     this.config = {
       ...defaultConfig,
@@ -112,6 +107,25 @@ export class LLMClient {
       apiKey,
       model,
     } as Required<LLMConfig>;
+  }
+
+  private async validateModel(): Promise<void> {
+    if (this.modelValidated) return;
+
+    const valid = await isValidModel(
+      this.config.model,
+      this.config.baseUrl,
+      this.config.apiKey,
+    );
+
+    if (!valid) {
+      throw new LLMError(
+        'ConfigError',
+        `Invalid model: ${this.config.model}. Use listAvailableModels() to see available models.`,
+      );
+    }
+
+    this.modelValidated = true;
   }
 
   private getRateLimitDelay(): number {
@@ -127,12 +141,18 @@ export class LLMClient {
     temperature?: number;
     maxTokens?: number;
   }): Promise<LLMResponse> {
+    await this.validateModel();
+
     const { system, prompt, temperature = 0.7, maxTokens = 1000 } = params;
     const retryConfig = this.config.retry;
     let lastError: unknown;
     let delay = retryConfig.initialDelay;
 
-    const modelSpec = VENICE_MODELS[this.config.model];
+    const modelSpec = await getModelSpec(
+      this.config.model,
+      this.config.baseUrl,
+      this.config.apiKey,
+    );
     const maxContextTokens = modelSpec.availableContextTokens;
 
     for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
