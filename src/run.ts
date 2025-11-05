@@ -5,6 +5,7 @@ import * as readline from 'readline';
 import { generateSummary } from './ai/providers.js';
 import { ResearchEngine } from './deep-research.js';
 import { output } from './output-manager.js';
+import { SearchProviderType, setSearchProvider } from './search.js';
 import { ensureDir } from './utils.js';
 
 const rl = readline.createInterface({
@@ -49,7 +50,6 @@ async function cleanup(error?: unknown) {
 
 async function run() {
   try {
-    // Get research parameters from command line or prompt user
     const query =
       process.argv[2] ||
       (await askQuestion('What would you like to research? '));
@@ -70,9 +70,23 @@ async function run() {
         10,
       ) || 2;
 
+    const searchProviderInput =
+      process.argv[5] ||
+      (await askQuestion('Search provider (brave/venice)? [brave] ')) ||
+      'brave';
+    const searchProvider =
+      searchProviderInput.toLowerCase() as SearchProviderType;
+
+    if (!['brave', 'venice'].includes(searchProvider)) {
+      throw new Error('Invalid search provider. Choose "brave" or "venice".');
+    }
+
+    setSearchProvider(searchProvider);
+
     output.log('\nStarting research...');
     output.log(`Query: ${query}`);
-    output.log(`Depth: ${depth} Breadth: ${breadth}\n`);
+    output.log(`Depth: ${depth} Breadth: ${breadth}`);
+    output.log(`Search Provider: ${searchProvider}\n`);
 
     const engine = new ResearchEngine({
       query,

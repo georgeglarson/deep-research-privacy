@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { LLMClient } from '../ai/llm-client.js';
 import { output } from '../output-manager.js';
 import { RateLimiter } from '../utils.js';
 
@@ -174,11 +175,76 @@ class BraveSearchProvider implements SearchProvider {
   }
 }
 
+export class VeniceSearchProvider implements SearchProvider {
+  type = 'venice-web';
+  private llmClient: LLMClient;
+
+  constructor() {
+    this.llmClient = new LLMClient({
+      enableWebSearch: true,
+      webSearchMode: 'on',
+      enableWebCitations: true,
+    });
+  }
+
+  async search(query: string): Promise<SearchResult[]> {
+    try {
+      output.log('Starting Venice AI grounded search...');
+
+      const response = await this.llmClient.complete({
+        system:
+          'You are a research assistant. Use web search to find accurate, up-to-date information.',
+        prompt: `Search for comprehensive information about: ${query}\n\nProvide detailed findings with sources.`,
+        temperature: 0.3,
+        maxTokens: 2000,
+        enableWebSearch: true,
+        webSearchMode: 'on',
+      });
+
+      if (!response.searchResults || response.searchResults.length === 0) {
+        output.log('Venice search returned no search results metadata');
+        return [
+          {
+            title: 'Venice AI Research',
+            content: response.content,
+            source: 'venice-ai-grounded',
+            type: this.type,
+          },
+        ];
+      }
+
+      return response.searchResults.map(result => ({
+        title: result.title,
+        content: result.snippet || response.content,
+        source: result.url,
+        type: this.type,
+      }));
+    } catch (error) {
+      output.log(
+        `Venice search error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
+      throw new SearchError(
+        'VENICE_ERROR',
+        `Venice search failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        this.type,
+      );
+    }
+  }
+}
+
 export function suggestSearchProvider(options: {
   type: string;
+  provider?: 'brave' | 'venice' | 'hybrid';
 }): SearchProvider {
   if (options.type !== 'web') {
     throw new Error('Only web search is supported');
   }
+
+  const provider = options.provider || 'brave';
+
+  if (provider === 'venice') {
+    return new VeniceSearchProvider();
+  }
+
   return new BraveSearchProvider();
 }

@@ -10,6 +10,19 @@ export interface SearchItem {
   source?: string;
 }
 
+export type SearchProviderType = 'brave' | 'venice' | 'hybrid';
+
+let currentProvider: SearchProviderType = 'brave';
+
+export function setSearchProvider(provider: SearchProviderType) {
+  currentProvider = provider;
+  output.log(`Search provider set to: ${provider}`);
+}
+
+export function getSearchProvider(): SearchProviderType {
+  return currentProvider;
+}
+
 export async function search(query: string): Promise<SearchItem[]> {
   try {
     const searchQuery = String(query || '').trim();
@@ -17,10 +30,11 @@ export async function search(query: string): Promise<SearchItem[]> {
       return [];
     }
 
-    output.log('Starting web search...');
-    const results = await suggestSearchProvider({ type: 'web' }).search(
-      searchQuery,
-    );
+    output.log(`Starting ${currentProvider} search...`);
+    const results = await suggestSearchProvider({
+      type: 'web',
+      provider: currentProvider,
+    }).search(searchQuery);
     return results.map(toSearchItem);
   } catch (error) {
     output.log('Search error:', error);

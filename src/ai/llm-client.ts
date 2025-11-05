@@ -6,6 +6,9 @@ export interface LLMConfig {
   model?: string;
   baseUrl?: string;
   retry?: RetryConfig;
+  enableWebSearch?: boolean;
+  webSearchMode?: 'off' | 'on' | 'auto';
+  enableWebCitations?: boolean;
 }
 
 export interface RetryConfig {
@@ -18,6 +21,14 @@ export interface LLMResponse {
   content: string;
   model: string;
   timestamp: string;
+  searchResults?: VeniceSearchResult[];
+  citations?: string[];
+}
+
+export interface VeniceSearchResult {
+  title: string;
+  url: string;
+  snippet: string;
 }
 
 export interface LLMMessage {
@@ -40,6 +51,9 @@ const defaultRetryConfig: RetryConfig = {
 const defaultConfig: Partial<LLMConfig> = {
   baseUrl: 'https://api.venice.ai/api/v1',
   retry: defaultRetryConfig,
+  enableWebSearch: false,
+  webSearchMode: 'auto',
+  enableWebCitations: true,
 };
 
 export class LLMError extends Error {
@@ -140,10 +154,19 @@ export class LLMClient {
     prompt: string;
     temperature?: number;
     maxTokens?: number;
+    enableWebSearch?: boolean;
+    webSearchMode?: 'off' | 'on' | 'auto';
   }): Promise<LLMResponse> {
     await this.validateModel();
 
-    const { system, prompt, temperature = 0.7, maxTokens = 1000 } = params;
+    const {
+      system,
+      prompt,
+      temperature = 0.7,
+      maxTokens = 1000,
+      enableWebSearch,
+      webSearchMode,
+    } = params;
     const retryConfig = this.config.retry;
     let lastError: unknown;
     let delay = retryConfig.initialDelay;
@@ -154,6 +177,15 @@ export class LLMClient {
       this.config.apiKey,
     );
     const maxContextTokens = modelSpec.availableContextTokens;
+
+    const useWebSearch = enableWebSearch ?? this.config.enableWebSearch;
+    const searchMode = webSearchMode ?? this.config.webSearchMode;
+
+    if (useWebSearch && !modelSpec.capabilities.supportsWebSearch) {
+      output.log(
+        `Warning: Model ${this.config.model} doesn't support web search. Disabling.`,
+      );
+    }
 
     for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
       try {
@@ -174,6 +206,13 @@ export class LLMClient {
               temperature,
               max_tokens: Math.min(maxTokens, maxContextTokens),
               top_p: 0.95,
+              venice_parameters: {
+                enable_web_search:
+                  useWebSearch && modelSpec.capabilities.supportsWebSearch
+                    ? searchMode
+                    : 'off',
+                enable_web_citations: this.config.enableWebCitations,
+              },
             }),
           },
         );
@@ -201,10 +240,16 @@ export class LLMClient {
           );
         }
 
+        const content = data.choices[0].message.content;
+        const searchResults = this.extractSearchResults(data);
+        const citations = this.extractCitations(content);
+
         return {
-          content: data.choices[0].message.content,
+          content,
           model: this.config.model,
           timestamp: new Date().toISOString(),
+          searchResults,
+          citations,
         };
       } catch (error: unknown) {
         lastError = error;
@@ -242,5 +287,28 @@ export class LLMClient {
       'An unexpected error occurred',
       lastError,
     );
+  }
+
+  private extractSearchResults(data: any): VeniceSearchResult[] | undefined {
+    if (!data.search_results || !Array.isArray(data.search_results)) {
+      return undefined;
+    }
+
+    return data.search_results.map((result: any) => ({
+      title: result.title || '',
+      url: result.url || '',
+      snippet: result.snippet || result.description || '',
+    }));
+  }
+
+  private extractCitations(content: string): string[] | undefined {
+    const citationRegex = /\[REF\](\d+)\[\/REF\]/g;
+    const matches = content.match(citationRegex);
+
+    if (!matches || matches.length === 0) {
+      return undefined;
+    }
+
+    return [...new Set(matches)];
   }
 }

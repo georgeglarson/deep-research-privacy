@@ -1,7 +1,7 @@
 import {
+  clearModelCache,
   fetchAvailableModels,
   fetchModelTraits,
-  clearModelCache,
 } from './ai/models.js';
 
 async function main() {
@@ -19,9 +19,13 @@ async function main() {
 
       console.log(`${model.id}`);
       console.log(`  Name: ${spec.name}`);
-      console.log(`  Context: ${spec.availableContextTokens.toLocaleString()} tokens`);
+      console.log(
+        `  Context: ${spec.availableContextTokens.toLocaleString()} tokens`,
+      );
       console.log(`  Traits: ${spec.traits.join(', ') || 'none'}`);
-      console.log(`  Pricing: $${spec.pricing.input.usd}/M input, $${spec.pricing.output.usd}/M output`);
+      console.log(
+        `  Pricing: $${spec.pricing.input.usd}/M input, $${spec.pricing.output.usd}/M output`,
+      );
 
       const features = [];
       if (caps.supportsFunctionCalling) features.push('Function Calling');
