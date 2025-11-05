@@ -23,6 +23,7 @@ export interface LLMResponse {
   timestamp: string;
   searchResults?: VeniceSearchResult[];
   citations?: string[];
+  structuredOutput?: any;
 }
 
 export interface VeniceSearchResult {
@@ -156,6 +157,7 @@ export class LLMClient {
     maxTokens?: number;
     enableWebSearch?: boolean;
     webSearchMode?: 'off' | 'on' | 'auto';
+    responseSchema?: object;
   }): Promise<LLMResponse> {
     await this.validateModel();
 
@@ -166,6 +168,7 @@ export class LLMClient {
       maxTokens = 1000,
       enableWebSearch,
       webSearchMode,
+      responseSchema,
     } = params;
     const retryConfig = this.config.retry;
     let lastError: unknown;
@@ -184,6 +187,12 @@ export class LLMClient {
     if (useWebSearch && !modelSpec.capabilities.supportsWebSearch) {
       output.log(
         `Warning: Model ${this.config.model} doesn't support web search. Disabling.`,
+      );
+    }
+
+    if (responseSchema && !modelSpec.capabilities.supportsResponseSchema) {
+      output.log(
+        `Warning: Model ${this.config.model} doesn't support response schema. Falling back to text parsing.`,
       );
     }
 
@@ -206,6 +215,17 @@ export class LLMClient {
               temperature,
               max_tokens: Math.min(maxTokens, maxContextTokens),
               top_p: 0.95,
+              ...(responseSchema &&
+                modelSpec.capabilities.supportsResponseSchema && {
+                  response_format: {
+                    type: 'json_schema',
+                    json_schema: {
+                      name: 'research_output',
+                      strict: true,
+                      schema: responseSchema,
+                    },
+                  },
+                }),
               venice_parameters: {
                 enable_web_search:
                   useWebSearch && modelSpec.capabilities.supportsWebSearch
@@ -243,6 +263,15 @@ export class LLMClient {
         const content = data.choices[0].message.content;
         const searchResults = this.extractSearchResults(data);
         const citations = this.extractCitations(content);
+        let structuredOutput;
+
+        if (responseSchema && modelSpec.capabilities.supportsResponseSchema) {
+          try {
+            structuredOutput = JSON.parse(content);
+          } catch (error) {
+            output.log('Failed to parse structured output:', error);
+          }
+        }
 
         return {
           content,
@@ -250,6 +279,7 @@ export class LLMClient {
           timestamp: new Date().toISOString(),
           searchResults,
           citations,
+          structuredOutput,
         };
       } catch (error: unknown) {
         lastError = error;

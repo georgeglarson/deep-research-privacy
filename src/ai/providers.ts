@@ -8,6 +8,10 @@ import {
   ReportProcessor,
   ReportResult,
 } from './response-processor.js';
+import {
+  convertStructuredToLegacy,
+  generateStructuredOutput,
+} from './structured-providers.js';
 
 const queryProcessor = new QueryProcessor();
 const learningProcessor = new LearningProcessor();
@@ -23,9 +27,27 @@ export async function generateOutput(params: {
   prompt: string;
   temperature?: number;
   maxTokens?: number;
+  useStructured?: boolean;
 }): Promise<
   { success: true; data: ProcessorResult } | { success: false; error: string }
 > {
+  const { useStructured = true } = params;
+
+  if (useStructured) {
+    const result = await generateStructuredOutput(params);
+
+    if (result.success && result.isStructured) {
+      const legacy = convertStructuredToLegacy(params.type, result.data);
+      return { success: true, data: legacy };
+    }
+
+    if (result.success && !result.isStructured) {
+      return { success: true, data: result.data };
+    }
+
+    return { success: false, error: result.error };
+  }
+
   try {
     const response = await client.complete({
       system: params.system,

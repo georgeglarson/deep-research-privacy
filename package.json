@@ -9,7 +9,8 @@
     "start": "tsx --env-file=.env src/run.ts",
     "docker": "tsx src/run.ts",
     "models": "tsx src/list-models.ts",
-    "test:venice-search": "tsx --env-file=.env src/test-venice-search.ts"
+    "test:venice-search": "tsx --env-file=.env src/test-venice-search.ts",
+    "test:structured": "tsx --env-file=.env src/test-structured-outputs.ts"
   },
   "author": "george.g.larson@gmail.com",
   "license": "ISC",
