@@ -1,5 +1,7 @@
 # Deep Research: Privacy Edition
 
+> Also on [Codeberg](https://codeberg.org/georgelarson/deep-research-privacy)
+
 [![Venice.ai](https://img.shields.io/badge/Private%20%26%20Uncensored%20AI-Venice.ai-blue?style=for-the-badge)](https://venice.ai/chat?ref=VB8W1j)
 [![Brave Search](https://img.shields.io/badge/Search%20by-Brave-orange?style=for-the-badge&logo=brave)](https://search.brave.com)
 
