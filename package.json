@@ -14,7 +14,8 @@
     "docker:start": "tsx src/run.ts",
     "docker:models": "tsx src/list-models.ts",
     "docker:test:venice-search": "tsx src/test-venice-search.ts",
-    "docker:test:structured": "tsx src/test-structured-outputs.ts"
+    "docker:test:structured": "tsx src/test-structured-outputs.ts",
+    "test": "echo \"No tests\" && exit 0"
   },
   "author": "george.g.larson@pm.me",
   "license": "ISC",
